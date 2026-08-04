@@ -29,8 +29,8 @@
   --navy-deep:   #0E2C48;  /* darker navy — gradients / footer base       */
   --sky:         #58A8DD;  /* light/sky blue — secondary accents          */
   --sky-soft:    #D3E4F2;  /* pale blue — section tints, cards            */
-  --orange:      #F4A428;  /* sun orange — primary CTAs                   */
-  --orange-deep: #E08E12;  /* orange CTA hover                            */
+  --orange:      #F4A428;  /* sun orange — lives in the Homes logo mark   */
+  --orange-deep: #E08E12;
   --ink:         #10233A;  /* near-black navy — body text                 */
   --white:       #FFFFFF;
 
@@ -40,14 +40,35 @@
 
   /* --------------------------------------------------------------------
      AA-SAFE TEXT VARIANTS
-     --orange and --sky are both light enough that WHITE text on them
-     fails WCAG AA (2.06:1 and 2.61:1). --ink passes on both (7.7:1 and
-     6.1:1), so --ink is the text colour on every orange/sky fill.
-     These two darkened variants are for orange/sky used AS TEXT on a
-     light background, where the raw brand colours also fail.
+     --sky, --orange and --gold are all light enough that WHITE text on
+     them fails WCAG AA. --ink passes on sky (6.1:1) and orange (7.7:1),
+     so --ink is the text colour on those fills. These darkened variants
+     are for the same hues used AS TEXT on a light background, where the
+     raw brand colours also fail.
      -------------------------------------------------------------------- */
   --orange-ink: #8F5608;  /* orange as text on light — 6.0:1 on paper  */
   --sky-ink:    #1A6BA2;  /* sky as text/link on light — 5.7:1 white, 4.7:1 on tints */
+
+  /* Brand gold — sampled from the Premium warranty shield (#D1AB52).
+     Fails AA as text on light (2.2:1), so --gold-ink is the text variant. */
+  --gold:      #D1AB52;
+  --gold-ink:  #836213;   /* 5.6:1 on white, 4.7:1 on tints */
+  --gold-soft: #F1E6C8;
+
+  /* Semantic accent — re-pointed per page so colour is one knob, not 40 rules.
+     Default (SureSky Homes) is sky-led: navy + sky + white dominate and gold
+     is reserved for the Premium warranty card only. */
+  --accent:         var(--sky-500);
+  --accent-on-dark: var(--sky-400);
+  --accent-ink:     var(--sky-ink);
+  --accent-soft:    var(--sky-200);
+  --accent-rgb:     88, 168, 221;
+
+  /* Primary CTA — blue-led. --ink on sky is 6.1:1 (AA). */
+  --cta:       var(--sky-500);
+  --cta-hover: #4092CE;
+  --cta-text:  var(--ink);
+  --cta-glow:  rgba(88, 168, 221, .45);
 
   /* Form feedback — both AA on white (5.3:1 and 6.0:1) */
   --ok:    #0F7B4F;
@@ -61,10 +82,6 @@
   --navy-700: #1B4C79;
   --navy-600: #2A6392;
   --navy-500: #3B7BAF;
-
-  --orange-500: var(--orange);
-  --orange-400: #F8B855;  /* orange on dark backgrounds — 8.1:1 on navy */
-  --orange-300: #FBD09A;
 
   --sky-600: var(--sky-ink);
   --sky-500: var(--sky);
@@ -82,8 +99,6 @@
   --bg: var(--paper);
   --text: var(--ink);
   --text-soft: var(--ink-soft);
-  --cta: var(--orange);
-  --cta-text: var(--ink);
   --logo-chip: var(--white);
 
   /* Spacing — 8px grid */
@@ -124,25 +139,37 @@
 
 /* --------------------------------------------------------------------------
    PER-BRAND THEME
-   homes.html keeps the full navy / sky / orange roofing palette above.
-   index.html (parent brand) swaps the dark family from navy to the charcoal
-   of the Inc monogram, pairs it with --sky-soft, and keeps orange as the CTA
-   accent for continuity. One override block — no structural changes.
+   homes.html uses the :root palette: navy + sky + white dominate, with gold
+   held back for the Premium warranty card alone.
+   index.html is the parent-brand front door: white + blue with gold as the
+   accent, and a navy primary CTA so it reads distinctly from Homes.
    -------------------------------------------------------------------------- */
 /* homes.html — the roofing brand uses the :root palette unchanged.
    The class is a styling hook so the theme is explicit in the markup. */
-.page-homes { /* navy / sky / orange, as defined in :root */ }
+.page-homes { /* navy + sky + white, as defined in :root */ }
+
+/* The single intentional gold moment on the Homes page: the Premium card. */
+.page-homes .tier--featured { border-color: var(--gold); }
+.page-homes .tier--featured .tier__ribbon { background: var(--gold); color: var(--navy-900); }
+.page-homes .tier--featured .tier__term { color: var(--gold-ink); }
+.page-homes .tier--featured .tier__list li::before { background: var(--gold); }
 
 .page-inc {
-  --navy-900: var(--charcoal);
-  --navy-800: var(--charcoal-2);
-  --navy-700: #43434A;
-  --navy-600: #55555D;
-  --navy-500: #6C6C76;
+  /* Gold accent, navy primary CTA, and a lighter, airier surface set. */
+  --accent:         var(--gold);
+  --accent-on-dark: var(--gold);
+  --accent-ink:     var(--gold-ink);
+  --accent-soft:    var(--gold-soft);
+  --accent-rgb:     209, 171, 82;
 
-  --paper-2: var(--sky-soft);   /* sky-soft carries the alternating sections */
-  --sky-050: #EAF2FA;
-  --logo-chip: var(--sky-soft); /* matches the monogram's own field */
+  --cta:       var(--navy-800);
+  --cta-hover: var(--navy-900);
+  --cta-text:  var(--white);
+  --cta-glow:  rgba(20, 58, 94, .34);
+
+  --paper-2: #EEF4FA;
+  --sky-050: #F4F9FD;
+  --logo-chip: var(--white);
 }
 
 /* --------------------------------------------------------------------------
@@ -191,7 +218,7 @@ h4 { font-size: 1.05rem; font-weight: 700; }
 p { margin: 0 0 var(--s-2); }
 p:last-child { margin-bottom: 0; }
 
-::selection { background: var(--orange-500); color: var(--navy-900); }
+::selection { background: var(--accent); color: var(--navy-900); }
 
 :focus-visible {
   outline: 3px solid var(--sky-500);
@@ -237,7 +264,7 @@ body::after {
   left: -9999px;
   top: 0;
   z-index: 10000;
-  background: var(--orange-500);
+  background: var(--accent);
   color: var(--navy-900);
   padding: 12px 20px;
   font-weight: 700;
@@ -254,16 +281,16 @@ body::after {
   font-size: .78rem;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--orange-ink);
+  color: var(--accent-ink);
   margin-bottom: var(--s-2);
 }
 .eyebrow::before {
   content: "";
   width: 28px;
   height: 2px;
-  background: var(--orange-500);
+  background: var(--accent);
 }
-.section--dark .eyebrow { color: var(--orange-400); }
+.section--dark .eyebrow { color: var(--accent-on-dark); }
 
 .section-head { max-width: 760px; margin-bottom: var(--s-5); }
 .section-head--center { margin-inline: auto; text-align: center; }
@@ -275,7 +302,7 @@ body::after {
 }
 .section--dark .lead { color: #A9BACC; }
 
-.accent { color: var(--orange-500); }
+.accent { color: var(--accent); }
 .rule {
   height: 1px;
   background: var(--line);
@@ -287,9 +314,10 @@ body::after {
    4. BUTTONS
    -------------------------------------------------------------------------- */
 .btn {
-  --btn-bg: var(--orange);
-  --btn-bg-hover: var(--orange-deep);
-  --btn-fg: var(--ink);
+  --btn-bg: var(--cta);
+  --btn-bg-hover: var(--cta-hover);
+  --btn-fg: var(--cta-text);
+  --btn-glow: var(--cta-glow);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -306,18 +334,39 @@ body::after {
   letter-spacing: .04em;
   text-transform: uppercase;
   cursor: pointer;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;               /* clips the sheen sweep */
   transition: transform var(--base) var(--ease),
               box-shadow var(--base) var(--ease),
               background-color var(--base) var(--ease),
               border-color var(--base) var(--ease),
               color var(--base) var(--ease);
 }
+/* Sheen sweep — a single soft highlight that crosses the button on hover.
+   Purely decorative, sits behind the label, and never intercepts pointers. */
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 -140%;
+  z-index: -1;
+  width: 60%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .38), transparent);
+  transform: skewX(-18deg);
+  transition: left 520ms var(--ease);
+  pointer-events: none;
+}
+.btn:hover::after { left: 160%; }
+
 .btn:hover {
   --btn-bg: var(--btn-bg-hover);
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 10px 24px rgba(244, 164, 40, .42);
+  box-shadow: 0 12px 28px var(--btn-glow);
 }
-.btn:active { transform: translateY(0) scale(1); }
+.btn:active { transform: translateY(-1px) scale(.99); }
+/* Arrow-bearing buttons nudge their glyph forward */
+.btn .btn__arrow { transition: transform var(--base) var(--ease); }
+.btn:hover .btn__arrow { transform: translateX(4px); }
 
 .btn--ghost {
   --btn-bg: transparent;
@@ -361,13 +410,13 @@ body::after {
   font-size: .88rem;
   letter-spacing: .06em;
   text-transform: uppercase;
-  color: var(--orange-ink);
+  color: var(--accent-ink);
   transition: gap var(--fast) var(--ease), color var(--fast) var(--ease);
 }
 .tlink::after { content: "→"; transition: transform var(--fast) var(--ease); }
 .tlink:hover { gap: 12px; }
 .tlink:hover::after { transform: translateX(3px); }
-.section--dark .tlink { color: var(--orange-400); }
+.section--dark .tlink { color: var(--accent-on-dark); }
 
 /* --------------------------------------------------------------------------
    5. HEADER
@@ -393,15 +442,15 @@ body::after {
   flex-wrap: wrap;
 }
 .topbar__item { display: inline-flex; align-items: center; gap: 7px; }
-.topbar__item svg { width: 14px; height: 14px; flex: none; color: var(--orange-400); }
+.topbar__item svg { width: 14px; height: 14px; flex: none; color: var(--accent-on-dark); }
 .topbar a:hover { color: var(--white); }
 .topbar__badge {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: rgba(244, 164, 40, .16);
-  border: 1px solid rgba(244, 164, 40, .38);
-  color: var(--orange-300);
+  background: rgba(var(--accent-rgb), .16);
+  border: 1px solid rgba(var(--accent-rgb), .38);
+  color: var(--accent-soft);
   padding: 3px 11px;
   border-radius: 100px;
   font-weight: 700;
@@ -412,7 +461,7 @@ body::after {
 .topbar__pulse {
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: var(--orange-400);
+  background: var(--accent-on-dark);
   animation: pulse 2.4s infinite;
 }
 @keyframes pulse {
@@ -486,7 +535,7 @@ body::after {
   position: absolute;
   left: 0; bottom: 0;
   width: 100%; height: 2px;
-  background: var(--orange-500);
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--base) var(--ease);
@@ -508,8 +557,8 @@ body::after {
   color: var(--navy-900);
   white-space: nowrap;
 }
-.nav__phone svg { width: 18px; height: 18px; color: var(--orange-500); }
-.nav__phone:hover { color: var(--orange-ink); }
+.nav__phone svg { width: 18px; height: 18px; color: var(--accent); }
+.nav__phone:hover { color: var(--accent-ink); }
 
 /* Hamburger */
 .nav__toggle {
@@ -551,7 +600,7 @@ body::after {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(90ch 60ch at 78% 12%, rgba(244, 164, 40, .30), transparent 62%),
+    radial-gradient(90ch 60ch at 78% 12%, rgba(var(--accent-rgb), .30), transparent 62%),
     radial-gradient(70ch 50ch at 8% 88%, rgba(88, 168, 221, .34), transparent 60%),
     linear-gradient(165deg, var(--navy-800), var(--navy-900) 62%);
 }
@@ -589,10 +638,31 @@ body::after {
   margin-bottom: var(--s-3);
 }
 
+/* Large hero lockup — the focal brand mark, sized in vw so it scales down
+   on small screens without pushing the headline and CTA below the fold. */
+.hero__logo {
+  display: block;
+  width: auto;
+  height: clamp(64px, 11vw, 116px);
+  margin-bottom: var(--s-3);
+}
+.hero__logo--chip {
+  background: var(--white);
+  border-radius: var(--r-lg);
+  padding: 14px 22px;
+  box-shadow: var(--shadow-md);
+  height: auto;
+}
+.hero__logo--chip img {
+  display: block;
+  width: auto;
+  height: clamp(56px, 9vw, 96px);
+}
+
 .hero h1 { color: var(--white); margin-bottom: var(--s-3); }
 .hero h1 em {
   font-style: normal;
-  color: var(--orange-500);
+  color: var(--accent);
   position: relative;
   white-space: nowrap;
 }
@@ -635,7 +705,7 @@ body::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(60% 50% at 30% 20%, rgba(244, 164, 40,.28), transparent 70%);
+  background: radial-gradient(60% 50% at 30% 20%, rgba(var(--accent-rgb),.28), transparent 70%);
 }
 .media-slot__label {
   position: absolute;
@@ -659,7 +729,7 @@ body::after {
   content: "";
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--orange-500);
+  background: var(--accent);
 }
 .media-slot__icon {
   position: absolute;
@@ -738,7 +808,7 @@ body::after {
   top: 0; left: 50%;
   transform: translateX(-50%);
   width: 44px; height: 3px;
-  background: var(--orange-500);
+  background: var(--accent);
   opacity: 0;
   transition: opacity var(--base) var(--ease);
 }
@@ -752,7 +822,7 @@ body::after {
   color: var(--navy-900);
   letter-spacing: -.03em;
 }
-.stat__num span { color: var(--orange-500); }
+.stat__num span { color: var(--accent); }
 .stat__label {
   font-size: .8rem;
   font-weight: 700;
@@ -789,7 +859,7 @@ body::after {
   color: #8FA3B8;
   white-space: nowrap;
 }
-.credbar__item svg { width: 18px; height: 18px; color: var(--orange-500); flex: none; }
+.credbar__item svg { width: 18px; height: 18px; color: var(--accent); flex: none; }
 .credbar__item::after {
   content: "";
   width: 5px; height: 5px;
@@ -821,7 +891,7 @@ body::after {
   width: 22px; height: 22px;
   margin-top: 2px;
   border-radius: 50%;
-  background: var(--orange-500);
+  background: var(--accent);
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 15px no-repeat,
            linear-gradient(#000, #000);
   -webkit-mask-composite: xor;
@@ -874,7 +944,7 @@ body::after {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 3px;
-  background: linear-gradient(90deg, var(--orange-500), var(--sky-500));
+  background: linear-gradient(90deg, var(--accent), var(--sky-500));
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--slow) var(--ease);
@@ -899,7 +969,7 @@ body::after {
   place-items: center;
   border-radius: var(--r-sm);
   background: var(--navy-900);
-  color: var(--orange-400);
+  color: var(--accent-on-dark);
   margin-bottom: var(--s-2);
 }
 .svc__icon svg { width: 24px; height: 24px; }
@@ -923,14 +993,14 @@ body::after {
 }
 .tier:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
 .tier--featured {
-  border: 2px solid var(--orange-500);
+  border: 2px solid var(--accent);
   box-shadow: var(--shadow-md);
 }
 .tier__ribbon {
   position: absolute;
   top: -13px; left: 50%;
   transform: translateX(-50%);
-  background: var(--orange-500);
+  background: var(--accent);
   color: var(--navy-900);
   font-family: var(--font-display);
   font-weight: 800;
@@ -974,7 +1044,7 @@ body::after {
   font-weight: 800;
   font-size: 2.3rem;
   line-height: 1;
-  color: var(--orange-500);
+  color: var(--accent);
   margin-bottom: 4px;
 }
 .tier__term small {
@@ -1004,7 +1074,7 @@ body::after {
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 11px no-repeat;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 11px no-repeat;
 }
-.tier--featured .tier__list li::before { background: var(--orange-500); }
+.tier--featured .tier__list li::before { background: var(--accent); }
 .tier .btn { margin-top: auto; }
 
 /* Warranty deep-dive blocks */
@@ -1037,7 +1107,7 @@ body::after {
   display: inline-block;
   margin-top: 10px;
   background: var(--navy-900);
-  color: var(--orange-400);
+  color: var(--accent-on-dark);
   font-family: var(--font-display);
   font-weight: 700;
   font-size: .82rem;
@@ -1070,7 +1140,7 @@ body::after {
   left: 0; top: 9px;
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--orange-500);
+  background: var(--accent);
 }
 
 /* Warranty distinction callout */
@@ -1081,7 +1151,7 @@ body::after {
   color: #C3D2E0;
   border-radius: var(--r-lg);
   padding: var(--s-4);
-  border-left: 4px solid var(--orange-500);
+  border-left: 4px solid var(--accent);
 }
 .callout h3 { color: var(--white); }
 .callout__split { display: grid; gap: var(--s-3); }
@@ -1096,7 +1166,7 @@ body::after {
   font-size: .82rem;
   letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--orange-400);
+  color: var(--accent-on-dark);
   margin-bottom: 10px;
 }
 .callout__half p { font-size: .95rem; color: #A9BACC; }
@@ -1139,20 +1209,20 @@ body::after {
   grid-column: 1 / -1;
 }
 .system--primary .system__name { color: var(--white); font-size: 1.15rem; }
-.system--primary .system__dot { background: var(--orange-500); box-shadow: 0 0 0 4px rgba(244, 164, 40,.24); }
-.system--primary .system__tag { color: var(--orange-400); }
+.system--primary .system__dot { background: var(--accent); box-shadow: 0 0 0 4px rgba(var(--accent-rgb),.24); }
+.system--primary .system__tag { color: var(--accent-on-dark); }
 
 /* --------------------------------------------------------------------------
    14. WHY US / STEPS
    -------------------------------------------------------------------------- */
 .why { display: grid; gap: var(--s-4); }
-.why__item { position: relative; padding-top: var(--s-3); border-top: 3px solid var(--orange-500); }
+.why__item { position: relative; padding-top: var(--s-3); border-top: 3px solid var(--accent); }
 .why__index {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1rem;
   letter-spacing: .18em;
-  color: var(--orange-400);
+  color: var(--accent-on-dark);
   margin-bottom: 10px;
 }
 .why__item h3 { color: var(--white); margin-bottom: 10px; }
@@ -1166,7 +1236,7 @@ body::after {
   place-items: center;
   border-radius: 50%;
   background: var(--white);
-  border: 3px solid var(--orange-500);
+  border: 3px solid var(--accent);
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.35rem;
@@ -1198,7 +1268,7 @@ body::after {
   line-height: 1;
   color: var(--navy-900);
 }
-.rating-badge__stars { color: var(--orange-500); font-size: 1.25rem; letter-spacing: 3px; }
+.rating-badge__stars { color: var(--accent); font-size: 1.25rem; letter-spacing: 3px; }
 .rating-badge__meta { font-size: .88rem; color: var(--text-soft); margin-top: 4px; }
 
 .reviews { display: grid; gap: var(--s-3); }
@@ -1223,7 +1293,7 @@ body::after {
   color: var(--paper-2);
   pointer-events: none;
 }
-.review__stars { color: var(--orange-500); letter-spacing: 2px; margin-bottom: 12px; font-size: 1rem; }
+.review__stars { color: var(--accent); letter-spacing: 2px; margin-bottom: 12px; font-size: 1rem; }
 .review__text { font-size: 1rem; color: var(--text); margin-bottom: var(--s-3); position: relative; z-index: 1; }
 .review__who { display: flex; align-items: center; gap: 12px; margin-top: auto; padding-top: var(--s-2); border-top: 1px solid var(--line); }
 .review__avatar {
@@ -1233,7 +1303,7 @@ body::after {
   display: grid;
   place-items: center;
   background: var(--navy-900);
-  color: var(--orange-400);
+  color: var(--accent-on-dark);
   font-family: var(--font-display);
   font-weight: 800;
   font-size: .92rem;
@@ -1330,7 +1400,7 @@ body::after {
   color: #C3D2E0;
   border-radius: var(--r-lg);
   padding: var(--s-4);
-  border-top: 4px solid var(--orange-500);
+  border-top: 4px solid var(--accent);
 }
 /* The card is dark but sits in a light section, so its heading would
    otherwise inherit the dark default heading colour and disappear. */
@@ -1344,7 +1414,7 @@ body::after {
   border-radius: var(--r-sm);
   background: rgba(255, 255, 255, .07);
   border: 1px solid rgba(255, 255, 255, .13);
-  color: var(--orange-400);
+  color: var(--accent-on-dark);
 }
 .info-list__icon svg { width: 20px; height: 20px; }
 .info-list__label {
@@ -1356,7 +1426,7 @@ body::after {
   margin-bottom: 3px;
 }
 .info-list__value { color: var(--white); font-weight: 500; font-size: 1.02rem; line-height: 1.45; }
-.info-list__value a:hover { color: var(--orange-400); }
+.info-list__value a:hover { color: var(--accent-on-dark); }
 .info-list__value small { display: block; color: #9FB3C8; font-weight: 400; font-size: .87rem; margin-top: 2px; }
 
 .form-card {
@@ -1375,7 +1445,7 @@ body::after {
   text-transform: uppercase;
   color: var(--navy-800);
 }
-.field label .req { color: var(--orange-ink); }
+.field label .req { color: var(--accent-ink); }
 .field input,
 .field select,
 .field textarea {
@@ -1442,8 +1512,8 @@ body::after {
   transition: border-color var(--fast) var(--ease), background-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
 }
 .radio-pill:hover { border-color: var(--sky-400); }
-.radio-pill:has(input:checked) { border-color: var(--orange-500); background: #FFF4EC; color: var(--navy-900); font-weight: 700; }
-.radio-pill:has(input:checked) .radio-pill__dot { border-color: var(--orange-500); background: var(--orange-500); box-shadow: inset 0 0 0 3px var(--white); }
+.radio-pill:has(input:checked) { border-color: var(--accent); background: #FFF4EC; color: var(--navy-900); font-weight: 700; }
+.radio-pill:has(input:checked) .radio-pill__dot { border-color: var(--accent); background: var(--accent); box-shadow: inset 0 0 0 3px var(--white); }
 .radio-pill:has(input:focus-visible) { outline: 3px solid var(--sky-500); outline-offset: 2px; }
 
 .form-note {
@@ -1525,7 +1595,7 @@ form.is-sent > *:not(.form-status) { display: none; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(60% 70% at 78% 22%, rgba(244, 164, 40,.42), transparent 66%),
+    radial-gradient(60% 70% at 78% 22%, rgba(var(--accent-rgb),.42), transparent 66%),
     repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 2px, transparent 2px 24px);
 }
 .division__banner svg { position: absolute; inset: 0; margin: auto; width: 76px; height: 76px; color: rgba(255,255,255,.30); }
@@ -1534,7 +1604,7 @@ form.is-sent > *:not(.form-status) { display: none; }
   position: absolute;
   top: 14px; left: 14px;
   z-index: 2;
-  background: var(--orange-500);
+  background: var(--accent);
   color: var(--navy-900);
   font-family: var(--font-display);
   font-weight: 800;
@@ -1573,7 +1643,7 @@ form.is-sent > *:not(.form-status) { display: none; }
   padding: var(--s-3);
   transition: border-left-color var(--base) var(--ease), transform var(--base) var(--ease), box-shadow var(--base) var(--ease);
 }
-.value:hover { border-left-color: var(--orange-500); transform: translateY(-3px); box-shadow: var(--shadow-sm); }
+.value:hover { border-left-color: var(--accent); transform: translateY(-3px); box-shadow: var(--shadow-sm); }
 .value h3 { font-size: 1.15rem; margin-bottom: 8px; }
 .value p { font-size: .95rem; color: var(--text-soft); }
 
@@ -1591,7 +1661,7 @@ form.is-sent > *:not(.form-status) { display: none; }
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(60ch 30ch at 50% 0%, rgba(244, 164, 40,.30), transparent 70%);
+  background: radial-gradient(60ch 30ch at 50% 0%, rgba(var(--accent-rgb),.30), transparent 70%);
 }
 .cta-band > * { position: relative; z-index: 1; }
 .cta-band h2 { color: var(--white); }
@@ -1609,7 +1679,7 @@ form.is-sent > *:not(.form-status) { display: none; }
   font-weight: 700;
   letter-spacing: .18em;
   text-transform: uppercase;
-  color: var(--orange-400);
+  color: var(--accent-on-dark);
   margin-bottom: var(--s-2);
 }
 .footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
@@ -1630,6 +1700,206 @@ form.is-sent > *:not(.form-status) { display: none; }
 }
 .footer__legal { display: flex; flex-wrap: wrap; gap: var(--s-2); }
 .footer__note { max-width: 70ch; font-size: .82rem; color: #6E8299; padding-bottom: var(--s-3); }
+
+/* --------------------------------------------------------------------------
+   18a. SURESKY INC — INTRO PAGE COMPONENTS
+   Deliberately a different layout language from the Homes page: a light,
+   centred, high-whitespace composition rather than Homes' dark split hero.
+   White + blue lead; gold appears only as fine accent detail.
+   -------------------------------------------------------------------------- */
+.intro-hero {
+  position: relative;
+  background: var(--white);
+  padding-block: var(--s-7) var(--s-6);
+  overflow: hidden;
+  text-align: center;
+}
+/* Soft sky wash behind the mark, plus a fine gold hairline at the base */
+.intro-hero::before {
+  content: "";
+  position: absolute;
+  inset: -40% 50% auto;
+  width: 130%;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(88, 168, 221, .16), transparent 70%);
+  pointer-events: none;
+}
+.intro-hero::after {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: 0;
+  width: min(180px, 40%);
+  height: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.intro-hero__inner { position: relative; z-index: 1; }
+
+.intro-hero__logo {
+  display: block;
+  width: auto;
+  height: clamp(78px, 13vw, 150px);
+  margin: 0 auto var(--s-3);
+}
+.intro-hero__tagline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(.9rem, 1.5vw, 1.05rem);
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+  margin-bottom: var(--s-4);
+}
+.intro-hero__title {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: var(--navy-900);
+  margin-bottom: var(--s-3);
+}
+.intro-hero__title em { font-style: normal; color: var(--sky-ink); }
+.intro-hero__lead {
+  font-size: 1.1rem;
+  color: var(--text-soft);
+  max-width: 58ch;
+  margin: 0 auto var(--s-5);
+}
+.intro-hero__note {
+  font-size: .9rem;
+  color: var(--text-soft);
+  margin-top: var(--s-3);
+}
+
+/* Oversized focal CTA — the single most important control on the page */
+.btn--xl {
+  min-height: 66px;
+  padding: 18px 40px;
+  font-size: clamp(.95rem, 1.5vw, 1.15rem);
+  border-radius: var(--r-md);
+  white-space: normal;
+  max-width: 100%;
+}
+
+/* Divisions strip — one live division, visible room for more */
+.dstrip { display: grid; gap: var(--s-3); grid-template-columns: 1fr; }
+.dstrip__card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--s-4);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: var(--white);
+  transition: transform var(--slow) var(--ease), box-shadow var(--slow) var(--ease), border-color var(--slow) var(--ease);
+}
+.dstrip__card--live { border-left: 3px solid var(--gold); }
+.dstrip__card--live:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--sky-200);
+  border-left-color: var(--gold);
+}
+.dstrip__icon {
+  width: 40px; height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-sm);
+  background: var(--navy-900);
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.dstrip__icon svg { width: 21px; height: 21px; }
+
+.dstrip__status {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+}
+.dstrip__card h3 { font-size: 1.3rem; margin: 0; }
+.dstrip__card p { font-size: .94rem; color: var(--text-soft); margin: 0; }
+.dstrip__card--soon {
+  border-style: dashed;
+  background: transparent;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 132px;
+  color: var(--text-soft);
+}
+.dstrip__card--soon .dstrip__icon {
+  width: 40px; height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-sm);
+  background: var(--navy-900);
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+.dstrip__icon svg { width: 21px; height: 21px; }
+
+.dstrip__status { color: var(--ink-soft); }
+
+/* --------------------------------------------------------------------------
+   18b. FLOATING "FREE ESTIMATE" BUTTON
+   Bottom-LEFT by design — the bottom-right corner is reserved for the AI chat
+   widget. Hidden while #estimate is on screen (see script.js).
+   -------------------------------------------------------------------------- */
+.fab-estimate {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 950;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 13px 22px;
+  background: var(--cta);
+  color: var(--cta-text);
+  border: 2px solid var(--cta);
+  border-radius: 100px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .92rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  animation: fab-bob 3.4s var(--ease) infinite;
+  /* Revealed by script.js once the hero (which carries its own CTA) has
+     scrolled past, and re-hidden while #estimate is on screen. */
+  transition: transform var(--base) var(--ease),
+              box-shadow var(--base) var(--ease),
+              background-color var(--base) var(--ease),
+              opacity var(--slow) var(--ease),
+              visibility var(--slow);
+}
+.fab-estimate svg { width: 18px; height: 18px; flex: none; }
+
+/* Gentle bob — small amplitude so it reads as a nudge, not a distraction */
+@keyframes fab-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+.fab-estimate:hover,
+.fab-estimate:focus-visible {
+  animation-play-state: paused;   /* settle while the user is engaging */
+  background: var(--cta-hover);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 16px 34px var(--cta-glow);
+}
+.fab-estimate:active { transform: translateY(-1px) scale(.99); }
+
+/* Hidden while the estimate form is already on screen */
+.fab-estimate.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(.96);
+  animation-play-state: paused;
+  pointer-events: none;
+}
 
 /* --------------------------------------------------------------------------
    19. SCROLL REVEAL
@@ -1674,6 +1944,7 @@ form.is-sent > *:not(.form-status) { display: none; }
   .why { grid-template-columns: repeat(3, 1fr); }
   .division--feature { display: grid; grid-template-columns: 1.05fr 1fr; }
   .division--feature .division__banner { height: 100%; min-height: 300px; }
+  .dstrip { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* The drawer carries its own CTA for mobile; on desktop the header CTA in
@@ -1746,7 +2017,7 @@ form.is-sent > *:not(.form-status) { display: none; }
     border-bottom: 1px solid rgba(255, 255, 255, .10);
   }
   .nav__link::after { display: none; }
-  .nav__link.is-active { color: var(--orange-400); }
+  .nav__link.is-active { color: var(--accent-on-dark); }
   .nav__divider { display: none; }
   .nav__links .btn { margin-top: var(--s-3); }
   .nav__actions .btn--header { display: none; }
@@ -1754,8 +2025,24 @@ form.is-sent > *:not(.form-status) { display: none; }
 }
 
 @media (max-width: 719px) {
+  /* Keep the hero headline and CTA high on small screens */
+  .hero { padding-top: var(--s-4); padding-bottom: var(--s-7); }
+  .hero__logo--chip { padding: 9px 14px; }
+  .hero__logo--chip img { height: 46px; }
+  .hero__trust { padding: 7px 13px 7px 9px; font-size: .8rem; margin-bottom: var(--s-2); }
+  .hero__sub { font-size: 1.02rem; margin-bottom: var(--s-3); }
+
   .tier__logo, .wblock__logo { height: 78px; }
   .logo__img { height: 36px; }
+  /* Compact FAB so it never sits over body copy or the footer form */
+  .fab-estimate {
+    left: 12px;
+    bottom: 12px;
+    min-height: 46px;
+    padding: 11px 18px;
+    font-size: .84rem;
+  }
+  .hero__logo--chip { padding: 10px 16px; }
   .logo--chip { padding: 10px 14px; }
   .logo--chip .logo__img { height: 34px; }
   .topbar__inner { justify-content: center; }
@@ -1778,6 +2065,21 @@ form.is-sent > *:not(.form-status) { display: none; }
     scroll-behavior: auto !important;
   }
   .reveal { opacity: 1; transform: none; }
+
+  /* Kill the movement outright — zeroing durations alone would still snap
+     elements to their transformed position instantly. Colour and shadow
+     feedback is kept so hover states remain legible. */
+  .btn:hover, .btn:active,
+  .fab-estimate, .fab-estimate:hover, .fab-estimate:active,
+  .card:hover, .svc:hover, .tier:hover, .review:hover,
+  .value:hover, .division:hover, .system:hover, .platform:hover,
+  .logo:hover, .step:hover {
+    transform: none !important;
+    animation: none !important;
+  }
+  .btn::after { display: none; }          /* no sheen sweep */
+  .btn:hover .btn__arrow,
+  .tlink:hover::after { transform: none !important; }
 }
 
 /* --------------------------------------------------------------------------

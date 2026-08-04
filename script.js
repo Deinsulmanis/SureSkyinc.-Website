@@ -101,6 +101,9 @@
      ------------------------------------------------------------------ */
   var counters = Array.prototype.slice.call(document.querySelectorAll('[data-count]'));
 
+  // The markup ships the FINAL number as its text content, so the correct
+  // figure shows even if JS never runs or the observer never fires. The
+  // animation only ever counts *up to* that value.
   function runCounter(el) {
     var target = parseInt(el.getAttribute('data-count'), 10);
     if (isNaN(target)) return;
@@ -109,6 +112,7 @@
 
     var duration = 1400;
     var start = null;
+    el.textContent = '0';
 
     function frame(ts) {
       if (start === null) start = ts;
@@ -134,6 +138,51 @@
       }, { threshold: 0.6 });
       counters.forEach(function (el) { counterObserver.observe(el); });
     }
+  }
+
+  /* ------------------------------------------------------------------
+     Floating "Free Estimate" button
+     Sits bottom-LEFT (bottom-right is reserved for the AI chat widget).
+     Smooth-scrolls to #estimate and hides itself while that section is
+     already on screen.
+     ------------------------------------------------------------------ */
+  var fab = document.getElementById('fabEstimate');
+  var estimateSection = document.getElementById('estimate');
+
+  if (fab && estimateSection) {
+    // Two independent reasons to stay hidden:
+    //   1. still in the hero, which carries its own visible CTA
+    //   2. #estimate is already on screen
+    var estimateOnScreen = false;
+
+    function syncFab() {
+      var pastHero = window.scrollY > window.innerHeight * 0.6;
+      fab.classList.toggle('is-hidden', !pastHero || estimateOnScreen);
+    }
+
+    fab.addEventListener('click', function () {
+      estimateSection.scrollIntoView({
+        behavior: reducedMotion ? 'auto' : 'smooth',
+        block: 'start'
+      });
+      // Move focus into the form so keyboard users land where they were sent
+      var firstField = estimateSection.querySelector('input, select, textarea');
+      if (firstField) {
+        window.setTimeout(function () { firstField.focus({ preventScroll: true }); },
+          reducedMotion ? 0 : 600);
+      }
+    });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) { estimateOnScreen = entry.isIntersecting; });
+        syncFab();
+      }, { threshold: 0, rootMargin: '0px 0px -25% 0px' }).observe(estimateSection);
+    }
+
+    window.addEventListener('scroll', syncFab, { passive: true });
+    window.addEventListener('resize', syncFab);
+    syncFab();
   }
 
   /* ------------------------------------------------------------------
