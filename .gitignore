@@ -1,0 +1,23 @@
+# Original tier-badge screenshots (1284x2778 phone captures, ~2.7 MB each).
+# The optimised, background-removed versions the site actually uses are
+# committed at assets/warranty-*.png (~25 KB each). Keeping the raw captures
+# out avoids ~8 MB sitting in git history forever. Delete these lines if you
+# want the originals versioned too.
+SureSkyEssential.png
+SureSkyPlus.png
+SureSkyPremium.png
+
+# Editor / OS cruft
+.vscode/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Dependencies (none today — the site is dependency-free)
+node_modules/
+
+# Local env / secrets — must never reach a public repo
+.env
+.env.*
+*.pem
+*.key
