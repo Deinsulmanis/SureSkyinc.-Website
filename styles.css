@@ -1743,12 +1743,33 @@ form.is-sent > *:not(.form-status) { display: none; }
   margin-inline: auto;
 }
 
-/* Single combined lockup — one clean mark, centred on the page axis */
-.intro-hero__logo {
+/* Unified lockup: the monogram sits centred and overlapping the wordmark,
+   reading as one mark rather than two stacked pieces.
+   Both parts are sized from --lockup-h, and the overlap is expressed as a
+   fraction of it, so the whole thing scales as a single unit at any width. */
+.intro-hero__lockup {
+  --lockup-h: clamp(104px, 14vw, 176px);
+  --overlap: .11;                 /* share of --lockup-h the mark dips down */
+  display: block;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0 auto;
+}
+.intro-hero__mark {
   display: block;
   width: auto;
-  height: clamp(112px, 15vw, 188px);
+  height: calc(var(--lockup-h) * .74);
+  margin: 0 auto calc(var(--lockup-h) * var(--overlap) * -1);
+  position: relative;
+  z-index: 1;                     /* monogram reads as the focal point */
+}
+.intro-hero__word {
+  display: block;
+  width: auto;
+  height: calc(var(--lockup-h) * .30);
   margin: 0 auto;
+  position: relative;
+  z-index: 0;                     /* wordmark anchored behind */
 }
 
 /* Motto — a deliberate tagline moment, flanked by fine gold rules */
