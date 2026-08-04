@@ -1116,8 +1116,18 @@
   </div>
 </footer>
 
-<!-- Floating shortcut to the estimate form. Bottom-LEFT by design: the
-     bottom-right corner is reserved for the AI chat widget. -->
+<!-- Timed prompt to the estimate form. Bottom-LEFT, deliberately clear of the
+     bottom-right corner reserved for the AI chat widget. Fires once per session. -->
+<div class="nudge" id="estimateNudge" role="complementary" aria-label="Free estimate prompt" hidden>
+  <button class="nudge__close" id="nudgeClose" type="button" aria-label="Dismiss">&times;</button>
+  <p class="nudge__title">Ready for a free roof estimate?</p>
+  <button class="nudge__cta" id="nudgeCta" type="button">
+    Get My Free Estimate <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+  </button>
+</div>
+
+<!-- Persistent shortcut to the same form. Stands down while the nudge above is
+     on screen so the corner never shows two competing prompts. -->
 <button class="fab-estimate is-hidden" id="fabEstimate" type="button">
   <svg aria-hidden="true"><use href="#i-doc"></use></svg>
   Free Estimate

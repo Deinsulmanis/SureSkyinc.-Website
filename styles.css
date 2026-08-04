@@ -64,11 +64,13 @@
   --accent-soft:    var(--sky-200);
   --accent-rgb:     88, 168, 221;
 
-  /* Primary CTA — blue-led. --ink on sky is 6.1:1 (AA). */
-  --cta:       var(--sky-500);
-  --cta-hover: #4092CE;
-  --cta-text:  var(--ink);
-  --cta-glow:  rgba(88, 168, 221, .45);
+  /* Primary CTA — solid blue, white label. #2178B8 is the one blue that
+     clears BOTH constraints: white text at 4.73:1 (AA) and 3.02:1 against
+     the navy hero it sits on, so the button never sinks into the background. */
+  --cta:       #2178B8;
+  --cta-hover: #1B6699;
+  --cta-text:  var(--white);
+  --cta-glow:  rgba(33, 120, 184, .45);
 
   /* Form feedback — both AA on white (5.3:1 and 6.0:1) */
   --ok:    #0F7B4F;
@@ -148,11 +150,8 @@
    The class is a styling hook so the theme is explicit in the markup. */
 .page-homes { /* navy + sky + white, as defined in :root */ }
 
-/* The single intentional gold moment on the Homes page: the Premium card. */
-.page-homes .tier--featured { border-color: var(--gold); }
-.page-homes .tier--featured .tier__ribbon { background: var(--gold); color: var(--navy-900); }
-.page-homes .tier--featured .tier__term { color: var(--gold-ink); }
-.page-homes .tier--featured .tier__list li::before { background: var(--gold); }
+/* No gold in the Homes UI at all — the only gold on the page is the artwork
+   inside the Premium warranty badge itself. Card chrome follows the blue. */
 
 .page-inc {
   /* Gold accent, navy primary CTA, and a lighter, airier surface set. */
@@ -638,25 +637,27 @@ body::after {
   margin-bottom: var(--s-3);
 }
 
-/* Large hero lockup — the focal brand mark, sized in vw so it scales down
-   on small screens without pushing the headline and CTA below the fold. */
+/* Large hero lockup. The artwork's edges were originally anti-aliased against
+   white, so it is presented on a white plate — that keeps the edges exactly as
+   drawn with no halo or colour fringing against the navy hero.
+   Native art is 240px tall; the cap of 96px keeps a 2x display inside native
+   resolution, so it never upscales and stays sharp. */
 .hero__logo {
-  display: block;
+  display: inline-block;
   width: auto;
-  height: clamp(64px, 11vw, 116px);
-  margin-bottom: var(--s-3);
+  margin-bottom: var(--s-4);
 }
 .hero__logo--chip {
   background: var(--white);
   border-radius: var(--r-lg);
-  padding: 14px 22px;
-  box-shadow: var(--shadow-md);
-  height: auto;
+  padding: clamp(14px, 2vw, 20px) clamp(18px, 2.6vw, 28px);
+  box-shadow: 0 18px 40px rgba(6, 18, 31, .32);
 }
 .hero__logo--chip img {
   display: block;
   width: auto;
-  height: clamp(56px, 9vw, 96px);
+  height: clamp(54px, 8vw, 96px);
+  max-width: 100%;
 }
 
 .hero h1 { color: var(--white); margin-bottom: var(--s-3); }
@@ -822,7 +823,7 @@ body::after {
   color: var(--navy-900);
   letter-spacing: -.03em;
 }
-.stat__num span { color: var(--accent); }
+.stat__num span { color: inherit; }   /* one colour per value */
 .stat__label {
   font-size: .8rem;
   font-weight: 700;
@@ -1954,6 +1955,105 @@ form.is-sent > *:not(.form-status) { display: none; }
 }
 
 /* --------------------------------------------------------------------------
+   18c. TIMED ESTIMATE NUDGE
+   Appears bottom-LEFT after a delay — deliberately clear of the bottom-right
+   corner reserved for the AI chat widget. Shown once per session; the floating
+   button stands down while it is on screen so the corner never doubles up.
+   -------------------------------------------------------------------------- */
+.nudge {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 960;
+  width: min(310px, calc(100vw - 36px));
+  padding: var(--s-3);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--cta);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity var(--slow) var(--ease),
+              transform var(--slow) var(--ease),
+              visibility var(--slow);
+}
+.nudge.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  /* one-shot entrance, then a slow bob that starts only once it has landed */
+  animation: nudge-in 420ms var(--ease) both,
+             nudge-bob 3.6s var(--ease) 1100ms infinite;
+}
+@keyframes nudge-in {
+  from { transform: translateY(14px) scale(.97); }
+  to   { transform: none; }
+}
+@keyframes nudge-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
+.nudge__title {
+  margin: 0 var(--s-3) 12px 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  color: var(--navy-900);
+}
+.nudge__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+  min-height: 44px;
+  padding: 11px 18px;
+  background: var(--cta);
+  color: var(--cta-text);
+  border: 0;
+  border-radius: var(--r-sm);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .88rem;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--base) var(--ease),
+              transform var(--base) var(--ease),
+              box-shadow var(--base) var(--ease);
+}
+.nudge__cta:hover {
+  background: var(--cta-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px var(--cta-glow);
+}
+.nudge__cta:hover .btn__arrow { transform: translateX(4px); }
+.nudge__cta .btn__arrow { transition: transform var(--base) var(--ease); }
+
+.nudge__close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  border-radius: var(--r-sm);
+  color: var(--ink-soft);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color var(--fast) var(--ease), background-color var(--fast) var(--ease);
+}
+.nudge__close:hover { color: var(--navy-900); background: var(--paper-2); }
+
+/* --------------------------------------------------------------------------
    19. SCROLL REVEAL
    -------------------------------------------------------------------------- */
 .reveal {
@@ -2087,6 +2187,7 @@ form.is-sent > *:not(.form-status) { display: none; }
   .tier__logo, .wblock__logo { height: 78px; }
   .logo__img { height: 36px; }
   /* Compact FAB so it never sits over body copy or the footer form */
+  .nudge { left: 12px; bottom: 12px; width: min(300px, calc(100vw - 24px)); }
   .fab-estimate {
     left: 12px;
     bottom: 12px;
@@ -2123,6 +2224,7 @@ form.is-sent > *:not(.form-status) { display: none; }
      feedback is kept so hover states remain legible. */
   .btn:hover, .btn:active,
   .fab-estimate, .fab-estimate:hover, .fab-estimate:active,
+  .nudge, .nudge.is-open, .nudge__cta:hover,
   .card:hover, .svc:hover, .tier:hover, .review:hover,
   .value:hover, .division:hover, .system:hover, .platform:hover,
   .logo:hover, .step:hover {
