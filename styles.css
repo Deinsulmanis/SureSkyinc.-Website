@@ -1705,6 +1705,18 @@ form.is-sent > *:not(.form-status) { display: none; }
 
 /* Mobile nav */
 @media (max-width: 959px) {
+  /* CRITICAL: backdrop-filter makes .site-header the containing block for any
+     position:fixed descendant. The drawer lives inside the header, so with the
+     blur on it anchors to the header box instead of the viewport — top/bottom
+     over-constrain, the height collapses to a stub, and only the first link
+     shows. Dropping the blur on mobile restores viewport anchoring. The header
+     is made fully opaque here to compensate; desktop keeps the frosted look. */
+  .site-header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--paper);
+  }
+
   .nav__toggle { display: grid; }
   .nav__phone .nav__phone-label { display: none; }
   .nav__links {
