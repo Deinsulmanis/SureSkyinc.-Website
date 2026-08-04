@@ -1749,7 +1749,8 @@ form.is-sent > *:not(.form-status) { display: none; }
    fraction of it, so the whole thing scales as a single unit at any width. */
 .intro-hero__lockup {
   --lockup-h: clamp(104px, 14vw, 176px);
-  --overlap: .11;                 /* share of --lockup-h the mark dips down */
+  --lockup-gap: .035;             /* clear space between mark and wordmark,
+                                     as a share of --lockup-h so it scales */
   display: block;
   width: -moz-fit-content;
   width: fit-content;
@@ -1759,7 +1760,7 @@ form.is-sent > *:not(.form-status) { display: none; }
   display: block;
   width: auto;
   height: calc(var(--lockup-h) * .74);
-  margin: 0 auto calc(var(--lockup-h) * var(--overlap) * -1);
+  margin: 0 auto calc(var(--lockup-h) * var(--lockup-gap));
   position: relative;
   z-index: 1;                     /* monogram reads as the focal point */
 }
