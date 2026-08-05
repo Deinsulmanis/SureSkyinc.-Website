@@ -2223,105 +2223,6 @@ form.is-sent > *:not(.form-status) { display: none; }
 }
 
 /* --------------------------------------------------------------------------
-   18c. TIMED ESTIMATE NUDGE
-   Appears bottom-LEFT after a delay — deliberately clear of the bottom-right
-   corner reserved for the AI chat widget. Shown once per session; the floating
-   button stands down while it is on screen so the corner never doubles up.
-   -------------------------------------------------------------------------- */
-.nudge {
-  position: fixed;
-  left: 18px;
-  bottom: 18px;
-  z-index: 960;
-  width: min(310px, calc(100vw - 36px));
-  padding: var(--s-3);
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--cta);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-lg);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(14px);
-  transition: opacity var(--slow) var(--ease),
-              transform var(--slow) var(--ease),
-              visibility var(--slow);
-}
-.nudge.is-open {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-  /* one-shot entrance, then a slow bob that starts only once it has landed */
-  animation: nudge-in 420ms var(--ease) both,
-             nudge-bob 3.6s var(--ease) 1100ms infinite;
-}
-@keyframes nudge-in {
-  from { transform: translateY(14px) scale(.97); }
-  to   { transform: none; }
-}
-@keyframes nudge-bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-5px); }
-}
-
-.nudge__title {
-  margin: 0 var(--s-3) 12px 0;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.02rem;
-  line-height: 1.35;
-  color: var(--navy-900);
-}
-.nudge__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  justify-content: center;
-  min-height: 44px;
-  padding: 11px 18px;
-  background: var(--cta);
-  color: var(--cta-text);
-  border: 0;
-  border-radius: var(--r-sm);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: .88rem;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background-color var(--base) var(--ease),
-              transform var(--base) var(--ease),
-              box-shadow var(--base) var(--ease);
-}
-.nudge__cta:hover {
-  background: var(--cta-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 22px var(--cta-glow);
-}
-.nudge__cta:hover .btn__arrow { transform: translateX(4px); }
-.nudge__cta .btn__arrow { transition: transform var(--base) var(--ease); }
-
-.nudge__close {
-  position: absolute;
-  top: 6px;
-  right: 8px;
-  width: 30px;
-  height: 30px;
-  display: grid;
-  place-items: center;
-  background: none;
-  border: 0;
-  border-radius: var(--r-sm);
-  color: var(--ink-soft);
-  font-size: 1.35rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: color var(--fast) var(--ease), background-color var(--fast) var(--ease);
-}
-.nudge__close:hover { color: var(--navy-900); background: var(--paper-2); }
-
-/* --------------------------------------------------------------------------
    19. SCROLL REVEAL
    -------------------------------------------------------------------------- */
 .reveal {
@@ -2431,10 +2332,9 @@ form.is-sent > *:not(.form-status) { display: none; }
      inverts while it is showing the close X. */
   body.nav-open .nav__toggle { background: var(--white); }
   body.nav-open .nav__toggle span { background: var(--navy-900); }
-  /* Both floating widgets outrank the drawer, so stand them down while it is
-     open rather than letting them punch through the panel. */
-  body.nav-open .fab-estimate,
-  body.nav-open .nudge { display: none; }
+  /* The floating button outranks the drawer, so stand it down while the
+     drawer is open rather than letting it punch through the panel. */
+  body.nav-open .fab-estimate { display: none; }
 
   .nav__phone .nav__phone-label { display: none; }
   .nav__links {
@@ -2491,7 +2391,6 @@ form.is-sent > *:not(.form-status) { display: none; }
   .tier__logo, .wblock__logo { height: 78px; }
   .logo__img { height: 36px; }
   /* Compact FAB so it never sits over body copy or the footer form */
-  .nudge { left: 12px; bottom: 12px; width: min(300px, calc(100vw - 24px)); }
   .fab-estimate {
     left: 12px;
     bottom: 12px;
@@ -2528,7 +2427,6 @@ form.is-sent > *:not(.form-status) { display: none; }
      feedback is kept so hover states remain legible. */
   .btn:hover, .btn:active,
   .fab-estimate, .fab-estimate:hover, .fab-estimate:active,
-  .nudge, .nudge.is-open, .nudge__cta:hover,
   .card:hover, .svc:hover, .tier:hover, .review:hover,
   .value:hover, .division:hover, .system:hover, .platform:hover,
   .logo:hover, .step:hover {

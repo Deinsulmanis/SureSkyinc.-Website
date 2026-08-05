@@ -27,7 +27,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-homes-180.png">
 
 <link rel="preload" href="assets/fonts/Manrope-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=20260805a">
+<link rel="stylesheet" href="styles.css?v=20260805b">
 
 <script type="application/ld+json">
 {
@@ -1253,23 +1253,13 @@
   </div>
 </footer>
 
-<!-- Timed prompt to the estimate form. Bottom-LEFT, deliberately clear of the
-     bottom-right corner reserved for the AI chat widget. Fires once per session. -->
-<div class="nudge" id="estimateNudge" role="complementary" aria-label="Free estimate prompt" hidden>
-  <button class="nudge__close" id="nudgeClose" type="button" aria-label="Dismiss">&times;</button>
-  <p class="nudge__title">Ready for a free roof estimate?</p>
-  <button class="nudge__cta" id="nudgeCta" type="button">
-    Get My Free Estimate <span class="btn__arrow" aria-hidden="true">&rarr;</span>
-  </button>
-</div>
-
-<!-- Persistent shortcut to the same form. Stands down while the nudge above is
-     on screen so the corner never shows two competing prompts. -->
+<!-- Persistent shortcut to the estimate form. Bottom-LEFT, deliberately clear
+     of the bottom-right corner reserved for the AI chat widget. -->
 <button class="fab-estimate is-hidden" id="fabEstimate" type="button">
   <svg aria-hidden="true"><use href="#i-doc"></use></svg>
   Free Estimate
 </button>
 
-<script src="script.js?v=20260805a" defer></script>
+<script src="script.js?v=20260805b" defer></script>
 </body>
 </html>

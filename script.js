@@ -225,11 +225,7 @@
      already on screen.
      ------------------------------------------------------------------ */
   var fab = document.getElementById('fabEstimate');
-  var nudge = document.getElementById('estimateNudge');
   var estimateSection = document.getElementById('estimate');
-
-  var NUDGE_DELAY = 7000;
-  var NUDGE_KEY = 'suresky.estimateNudge.dismissed';
 
   function scrollToEstimate() {
     if (!estimateSection) return;
@@ -245,92 +241,27 @@
   }
 
   if (fab && estimateSection) {
-    // Three independent reasons for the button to stay hidden:
+    // Two independent reasons for the button to stay hidden:
     //   1. still in the hero, which carries its own visible CTA
-    //   2. #estimate is already on screen
-    //   3. the timed nudge is showing — one prompt per corner, never two
+    //   2. #estimate is already on screen, so the shortcut is redundant
     var estimateOnScreen = false;
-
-    function nudgeOpen() {
-      return !!nudge && nudge.classList.contains('is-open');
-    }
 
     function syncFab() {
       var pastHero = window.scrollY > window.innerHeight * 0.6;
-      fab.classList.toggle('is-hidden', !pastHero || estimateOnScreen || nudgeOpen());
+      fab.classList.toggle('is-hidden', !pastHero || estimateOnScreen);
     }
 
     fab.addEventListener('click', scrollToEstimate);
 
-    /* ---- timed nudge -------------------------------------------------- */
-    var nudgeClose = document.getElementById('nudgeClose');
-    var nudgeCta = document.getElementById('nudgeCta');
-
-    function readDismissed() {
-      try { return sessionStorage.getItem(NUDGE_KEY) === '1'; } catch (e) { return false; }
-    }
-    function markDismissed() {
-      try { sessionStorage.setItem(NUDGE_KEY, '1'); } catch (e) { /* private mode */ }
-    }
-
-    function hideNudge() {
-      if (!nudge) return;
-      nudge.classList.remove('is-open');
-      markDismissed();
-      window.setTimeout(function () { nudge.hidden = true; }, reducedMotion ? 0 : 320);
-      syncFab();
-    }
-
-    // Armed by the timer, then shown at the first moment it won't cover
-    // anything important. In practice that is immediately — by 7s most
-    // visitors have scrolled — but a visitor still sitting in the hero gets
-    // it only once they move past it, so it never lands on the hero's own
-    // CTA (which is the same reason the floating button waits).
-    var nudgeArmed = false;
-
-    function maybeShowNudge() {
-      if (!nudge || !nudgeArmed || nudgeOpen()) return;
-      if (estimateOnScreen || readDismissed()) return;
-      if (window.scrollY <= window.innerHeight * 0.6) return;
-      nudge.hidden = false;
-      requestAnimationFrame(function () {
-        nudge.classList.add('is-open');
-        syncFab();
-      });
-    }
-
-    if (nudge && !readDismissed()) {
-      window.setTimeout(function () {
-        nudgeArmed = true;
-        maybeShowNudge();
-      }, NUDGE_DELAY);
-    }
-
-    if (nudgeClose) nudgeClose.addEventListener('click', hideNudge);
-    if (nudgeCta) nudgeCta.addEventListener('click', function () {
-      hideNudge();
-      scrollToEstimate();
-    });
-
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) { estimateOnScreen = entry.isIntersecting; });
-        // Reaching the form makes the prompt redundant
-        if (estimateOnScreen && nudgeOpen()) hideNudge();
         syncFab();
       }, { threshold: 0, rootMargin: '0px 0px -25% 0px' }).observe(estimateSection);
     }
 
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && nudgeOpen()) hideNudge();
-    });
-
-    function onScroll() {
-      maybeShowNudge();
-      syncFab();
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
+    window.addEventListener('scroll', syncFab, { passive: true });
+    window.addEventListener('resize', syncFab);
     syncFab();
   }
 
