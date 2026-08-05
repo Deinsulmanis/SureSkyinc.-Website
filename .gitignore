@@ -7,6 +7,11 @@ SureSkyEssential.png
 SureSkyPlus.png
 SureSkyPremium.png
 
+# Full-size page exports of the sample roof report (~1.9 MB for the seven).
+# The optimised copies the site serves are committed under
+# assets/report-pages/ at ~450 KB total. Same reasoning as above.
+/roof-report-sample-p*.png
+
 # Editor / OS cruft
 .vscode/
 .DS_Store

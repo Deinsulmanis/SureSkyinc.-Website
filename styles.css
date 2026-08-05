@@ -1250,6 +1250,250 @@ body::after {
 }
 .step h3 { margin-bottom: 8px; }
 .step p { color: var(--text-soft); font-size: .98rem; }
+.step .tlink { margin-top: 12px; }
+
+/* --------------------------------------------------------------------------
+   14a. ROOF MAPPING
+   Reuses the .feature two-column block and .checklist. Only the trust chips
+   and the report card are new, and both are built from existing tokens so
+   they inherit the same borders, radii, shadows and hover motion as .card.
+   -------------------------------------------------------------------------- */
+.mapchips {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--s-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.mapchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  font-size: .87rem;
+  font-weight: 700;
+  color: var(--navy-900);
+  transition: transform var(--slow) var(--ease),
+              box-shadow var(--slow) var(--ease),
+              border-color var(--slow) var(--ease);
+}
+.mapchip:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: var(--sky-200);
+}
+.mapchip svg { width: 15px; height: 15px; flex: none; color: var(--accent); }
+
+/* The card takes the place of a photo in the .feature media column. */
+.report {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: var(--s-4);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--slow) var(--ease),
+              box-shadow var(--slow) var(--ease),
+              border-color var(--slow) var(--ease);
+}
+.report:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--sky-200);
+}
+.report__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: var(--s-2);
+  margin-bottom: var(--s-2);
+  border-bottom: 1px solid var(--line);
+}
+.report__icon {
+  display: grid;
+  place-items: center;
+  width: 46px; height: 46px;
+  flex: none;
+  border-radius: var(--r-md);
+  background: var(--sky-050);
+  border: 1px solid var(--sky-200);
+}
+.report__icon svg { width: 22px; height: 22px; color: var(--accent-ink); }
+.report__eyebrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .76rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  margin-bottom: 2px;
+}
+.report__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--navy-900);
+  margin: 0;
+}
+.checklist--tight { margin: 0; gap: 11px; }
+.checklist--tight li { font-size: .95rem; }
+/* A contents list, not supporting copy — keep it at full text weight. */
+.checklist--tight li span { color: var(--text); font-size: .95rem; }
+.report__note {
+  margin: var(--s-3) 0 0;
+  padding-top: var(--s-2);
+  border-top: 1px dashed var(--line);
+  font-size: .88rem;
+  color: var(--text-soft);
+}
+
+/* ---- Sample report viewer -------------------------------------------------
+   A framed document preview. The stage is a scroll-snap strip rather than a
+   transform-driven slider, so swipe, trackpad and keyboard scrolling all work
+   natively and the controls only have to set scrollLeft. .docview__nav stays
+   hidden until script.js adds .is-enhanced, which leaves a plain scrollable
+   strip — never a row of dead buttons — if the script never runs. */
+.docview {
+  margin-top: var(--s-5);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+.docview__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  padding: 14px var(--s-3);
+  background: var(--sky-050);
+  border-bottom: 1px solid var(--line);
+}
+.docview__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: .95rem;
+  color: var(--navy-900);
+}
+.docview__label svg { width: 18px; height: 18px; flex: none; color: var(--accent-ink); }
+.docview__count {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .8rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+
+.docview__stage {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  background: var(--paper-2);
+  scrollbar-width: none;          /* the dots and arrows are the affordance */
+}
+.docview__stage::-webkit-scrollbar { display: none; }
+.docview__stage:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+
+/* Each page is exactly one stage-width, so page index is scrollLeft /
+   clientWidth with no gap or padding maths to correct for. */
+.docpage {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  margin: 0;
+  padding: var(--s-3);
+  display: grid;
+  place-items: center;
+}
+.docpage img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  /* Caps the frame height so seven portrait pages stay compact. Native is
+     1684px tall, so this only ever scales down. */
+  max-height: clamp(340px, 58vh, 600px);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-sm);
+  background: var(--white);
+}
+
+.docview__nav {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  border-top: 1px solid var(--line);
+}
+.docview.is-enhanced .docview__nav { display: flex; }
+
+.docbtn {
+  width: 48px; height: 48px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cta);
+  color: var(--cta-text);
+  border: 2px solid var(--cta);
+  cursor: pointer;
+  padding: 0;
+  transition: transform var(--base) var(--ease),
+              box-shadow var(--base) var(--ease),
+              background-color var(--base) var(--ease),
+              opacity var(--base) var(--ease);
+}
+.docbtn svg { width: 20px; height: 20px; }
+.docbtn:hover:not(:disabled) {
+  background: var(--cta-hover);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px var(--cta-glow);
+}
+.docbtn:disabled { opacity: .32; cursor: default; }
+
+.docdots { display: flex; align-items: center; gap: 2px; }
+/* The hit area is 34x40; the visible dot inside it stays small. */
+.docdot {
+  width: 34px; height: 40px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.docdot::before {
+  content: "";
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--sky-200);
+  transition: transform var(--base) var(--ease), background-color var(--base) var(--ease);
+}
+.docdot:hover::before { background: var(--accent-soft); transform: scale(1.25); }
+.docdot[aria-current="true"]::before { background: var(--accent); transform: scale(1.45); }
+
+.docview__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 0 var(--s-3) var(--s-4);
+  text-align: center;
+}
+.docview__note { margin: 0; font-size: .85rem; color: var(--text-soft); }
 
 /* --------------------------------------------------------------------------
    15. REVIEWS
@@ -2230,6 +2474,15 @@ form.is-sent > *:not(.form-status) { display: none; }
 @media (max-width: 719px) {
   /* Keep the hero headline and CTA high on small screens */
   .hero { padding-top: var(--s-4); padding-bottom: var(--s-7); }
+
+  /* Seven dots plus two 48px arrows will not fit a phone without shrinking
+     the hit areas below a comfortable size. Swipe, arrows and the page
+     counter cover navigation here, so the dots stand down instead. */
+  .docdots { display: none; }
+  .docview__bar { padding: 12px var(--s-2); }
+  .docview__label { font-size: .88rem; }
+  .docpage { padding: var(--s-2); }
+  .docview__nav { gap: var(--s-4); }
   .hero__logo--chip { padding: 9px 14px; }
   .hero__logo--chip img { height: 46px; }
   .hero__trust { padding: 7px 13px 7px 9px; font-size: .8rem; margin-bottom: var(--s-2); }

@@ -75,6 +75,84 @@
   });
 
   /* ------------------------------------------------------------------
+     Sample report viewer (homes.html)
+     The stage is a CSS scroll-snap strip, so swipe and trackpad scrolling
+     are the browser's job — these handlers only set scrollLeft and mirror
+     the resulting position into the counter, dots and arrow states. The
+     controls are hidden in CSS until .is-enhanced lands, so nothing dead
+     is ever shown if this block does not run.
+     ------------------------------------------------------------------ */
+  var docView = document.getElementById('docView');
+  var docStage = document.getElementById('docStage');
+
+  if (docView && docStage) {
+    var docPages = docStage.querySelectorAll('.docpage');
+    var docPrev = document.getElementById('docPrev');
+    var docNext = document.getElementById('docNext');
+    var docCount = document.getElementById('docCount');
+    var docDots = document.getElementById('docDots');
+    var docIndex = 0;
+    var docTicking = false;
+    var dots = [];
+
+    for (var d = 0; d < docPages.length; d++) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'docdot';
+      dot.setAttribute('aria-label', 'Go to page ' + (d + 1));
+      dot.setAttribute('data-page', d);
+      docDots.appendChild(dot);
+      dots.push(dot);
+    }
+
+    function docGoTo(i, smooth) {
+      i = Math.max(0, Math.min(docPages.length - 1, i));
+      docStage.scrollTo({
+        left: i * docStage.clientWidth,
+        behavior: (smooth && !reducedMotion) ? 'smooth' : 'auto'
+      });
+    }
+
+    function syncDoc() {
+      var w = docStage.clientWidth || 1;
+      docIndex = Math.max(0, Math.min(docPages.length - 1, Math.round(docStage.scrollLeft / w)));
+      docCount.textContent = 'Page ' + (docIndex + 1) + ' of ' + docPages.length;
+      docPrev.disabled = docIndex === 0;
+      docNext.disabled = docIndex === docPages.length - 1;
+      for (var j = 0; j < dots.length; j++) {
+        if (j === docIndex) dots[j].setAttribute('aria-current', 'true');
+        else dots[j].removeAttribute('aria-current');
+      }
+      docTicking = false;
+    }
+
+    docPrev.addEventListener('click', function () { docGoTo(docIndex - 1, true); });
+    docNext.addEventListener('click', function () { docGoTo(docIndex + 1, true); });
+
+    docDots.addEventListener('click', function (e) {
+      var hit = e.target.closest('.docdot');
+      if (hit) docGoTo(parseInt(hit.getAttribute('data-page'), 10), true);
+    });
+
+    docStage.addEventListener('scroll', function () {
+      if (docTicking) return;
+      docTicking = true;
+      window.requestAnimationFrame(syncDoc);
+    }, { passive: true });
+
+    docStage.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); docGoTo(docIndex + 1, true); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); docGoTo(docIndex - 1, true); }
+    });
+
+    // A width change moves every page, so re-anchor on the current one.
+    window.addEventListener('resize', function () { docGoTo(docIndex, false); });
+
+    docView.classList.add('is-enhanced');
+    syncDoc();
+  }
+
+  /* ------------------------------------------------------------------
      Scroll reveal — staggered within each section
      ------------------------------------------------------------------ */
   var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));

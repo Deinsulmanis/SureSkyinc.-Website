@@ -27,7 +27,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-homes-180.png">
 
 <link rel="preload" href="assets/fonts/Manrope-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=20260804c">
+<link rel="stylesheet" href="styles.css?v=20260805a">
 
 <script type="application/ld+json">
 {
@@ -129,6 +129,8 @@
   <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5M9 13h6M9 17h6"/></symbol>
   <symbol id="i-camera" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h3l1.5-2h7L17 7h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></symbol>
+  <symbol id="i-chev-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-chev-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></symbol>
 </svg>
 
 <!-- ============================================================
@@ -753,6 +755,7 @@
           exactly how much material the job needs. You get the full breakdown up front — so you
           know precisely what you're paying for, with no guesswork.
         </p>
+        <a class="tlink" href="#mapping">See what your report includes</a>
       </div>
       <div class="step reveal">
         <div class="step__num">2</div>
@@ -777,12 +780,152 @@
 </section>
 
 <!-- ============================================================
-     08 — REVIEWS
+     08 — ROOF MAPPING
+     ============================================================ -->
+<section class="section section--sky" id="mapping">
+  <div class="container">
+
+    <div class="feature reveal">
+      <div>
+        <p class="eyebrow">08 / Roof Mapping</p>
+        <h2>Know Exactly What Your Roof Needs — Before We Start</h2>
+        <p class="lead">
+          Before anyone quotes you a number, we build a precise digital map of your roof from
+          satellite and aerial imagery. Every facet, pitch, edge, valley and ridge gets measured
+          properly — and nobody has to climb up on your house to do it.
+        </p>
+
+        <ul class="checklist">
+          <li>
+            <div>
+              <strong>Measured, not eyeballed</strong>
+              <span>Roof area, pitch and every edge length come off the imagery to the inch, so the numbers your quote is built on are real measurements rather than someone's estimate from the driveway.</span>
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>Exact material quantities</strong>
+              <span>Because the measurements are exact, we can calculate precisely how much material your roof takes — shingles, starter, ice and water shield, underlay, capping and flashing — at a sensible waste allowance.</span>
+            </div>
+          </li>
+          <li>
+            <div>
+              <strong>A quote you can check</strong>
+              <span>You get the same report we price from. No padded estimates, no guesswork, no surprises once the job starts — you can see exactly what you're paying for and why.</span>
+            </div>
+          </li>
+        </ul>
+
+        <ul class="mapchips">
+          <li class="mapchip"><svg aria-hidden="true"><use href="#i-check"></use></svg>Every facet measured</li>
+          <li class="mapchip"><svg aria-hidden="true"><use href="#i-check"></use></svg>Exact material quantities</li>
+          <li class="mapchip"><svg aria-hidden="true"><use href="#i-check"></use></svg>Itemised, transparent quote</li>
+        </ul>
+
+      </div>
+
+      <div class="feature__media">
+        <div class="report">
+          <div class="report__head">
+            <span class="report__icon" aria-hidden="true"><svg><use href="#i-doc"></use></svg></span>
+            <div>
+              <p class="report__eyebrow">Your roof report</p>
+              <p class="report__title">What's inside</p>
+            </div>
+          </div>
+          <ul class="checklist checklist--tight">
+            <li><div><span>Total roof area, in square feet and squares</span></div></li>
+            <li><div><span>Number of roof facets and the predominant pitch</span></div></li>
+            <li><div><span>Eaves, valleys, hips, ridges and rakes, measured individually</span></div></li>
+            <li><div><span>Wall flashing and step flashing lengths</span></div></li>
+            <li><div><span>A full material breakdown at a recommended waste factor</span></div></li>
+            <li><div><span>Labelled roof diagrams you can keep and compare against</span></div></li>
+          </ul>
+          <p class="report__note">Prepared for every homeowner we quote — free, and yours whether or not you go ahead with us.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sample report viewer. The stage is a scroll-snap strip, so swiping
+         and trackpad scrolling work natively; the arrows and dots below are
+         revealed by script.js and only drive scrollLeft. With JS off it
+         degrades to a plain scrollable strip of pages. -->
+    <div class="docview reveal" id="docView">
+      <div class="docview__bar">
+        <p class="docview__label">
+          <svg aria-hidden="true"><use href="#i-doc"></use></svg>
+          Sample roof report
+        </p>
+        <p class="docview__count" id="docCount" aria-live="polite">Page 1 of 7</p>
+      </div>
+
+      <div class="docview__stage" id="docStage" tabindex="0" role="region"
+           aria-label="Sample roof report pages — swipe, scroll or use the arrow keys">
+        <figure class="docpage">
+          <img src="assets/report-pages/roof-report-sample-p1.jpg" width="1191" height="1684"
+               alt="SureSky sample roof report — page 1, cover with aerial view and headline measurements"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="docpage">
+          <img src="assets/report-pages/roof-report-sample-p2.png" width="1191" height="1684"
+               alt="SureSky sample roof report — page 2, roof diagram"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="docpage">
+          <img src="assets/report-pages/roof-report-sample-p3.png" width="1191" height="1684"
+               alt="SureSky sample roof report — page 3, length measurement report"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="docpage">
+          <img src="assets/report-pages/roof-report-sample-p4.png" width="1191" height="1684"
+               alt="SureSky sample roof report — page 4, area measurement report"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="docpage">
+          <img src="assets/report-pages/roof-report-sample-p5.png" width="1191" height="1684"
+               alt="SureSky sample roof report — page 5, pitch and direction report"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="docpage">
+          <img src="assets/report-pages/roof-report-sample-p6.png" width="1191" height="1684"
+               alt="SureSky sample roof report — page 6, report summary and waste table"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="docpage">
+          <img src="assets/report-pages/roof-report-sample-p7.png" width="1191" height="1684"
+               alt="SureSky sample roof report — page 7, material calculations"
+               loading="lazy" decoding="async">
+        </figure>
+      </div>
+
+      <div class="docview__nav">
+        <button class="docbtn" id="docPrev" type="button" aria-label="Previous page">
+          <svg aria-hidden="true"><use href="#i-chev-left"></use></svg>
+        </button>
+        <div class="docdots" id="docDots"></div>
+        <button class="docbtn" id="docNext" type="button" aria-label="Next page">
+          <svg aria-hidden="true"><use href="#i-chev-right"></use></svg>
+        </button>
+      </div>
+
+      <div class="docview__foot">
+        <a class="btn" href="assets/suresky-roof-report-sample.pdf" target="_blank" rel="noopener">
+          View a Sample Roof Report <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <p class="docview__note">Opens the full seven-page PDF in a new tab.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     09 — REVIEWS
      ============================================================ -->
 <section class="section section--paper2" id="reviews">
   <div class="container">
     <div class="section-head section-head--center reveal">
-      <p class="eyebrow">08 / Reviews</p>
+      <p class="eyebrow">09 / Reviews</p>
       <h2>What Our Customers Say</h2>
       <p class="lead" style="margin-inline:auto">
         Feedback from Alberta homeowners we have worked with.
@@ -853,12 +996,12 @@
 </section>
 
 <!-- ============================================================
-     09 — CONTACT + ESTIMATE FORM
+     10 — CONTACT + ESTIMATE FORM
      ============================================================ -->
 <section class="section" id="estimate">
   <div class="container">
     <div class="section-head reveal">
-      <p class="eyebrow">09 / Free Estimate</p>
+      <p class="eyebrow">10 / Free Estimate</p>
       <h2>Request Your Free Estimate</h2>
       <p class="lead">
         Tell us what's going on with your roof. We'll get back to you with a time for a free,
@@ -1127,6 +1270,6 @@
   Free Estimate
 </button>
 
-<script src="script.js?v=20260804c" defer></script>
+<script src="script.js?v=20260805a" defer></script>
 </body>
 </html>
