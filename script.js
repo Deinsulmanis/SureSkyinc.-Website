@@ -427,6 +427,33 @@
   }
 
   /* ------------------------------------------------------------------
+     Lead alert — fire-and-forget SMS via a Netlify Function.
+     Opt-in per form through [data-notify], so only the Homes estimate form
+     triggers it. Deliberately unawaited and fully swallowed: Formspree owns
+     the visible success/error state, and a failure here — offline, function
+     cold-start, Twilio down — must never change what the visitor sees.
+     ------------------------------------------------------------------ */
+  function notifyLead(form) {
+    var url = form.getAttribute('data-notify');
+    if (!url || typeof fetch !== 'function') return;
+
+    try {
+      var payload = {};
+      new FormData(form).forEach(function (value, key) {
+        if (typeof value === 'string') payload[key] = value;
+      });
+
+      fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(function () { /* side effect only — never surfaced */ });
+    } catch (e) {
+      /* same: the alert path can never break the submit */
+    }
+  }
+
+  /* ------------------------------------------------------------------
      Forms — AJAX submit to the endpoint in [data-endpoint].
      Used by the SureSky Homes estimate form and the SureSky Inc. enquiry
      form, both on Formspree and told apart by their _subject field. The
@@ -462,6 +489,10 @@
         submit.disabled = true;
         submit.textContent = 'Sending…';
       }
+
+      // Sent in parallel with the Formspree post below, and intentionally not
+      // awaited — the email is the system of record, the SMS is a nudge.
+      notifyLead(form);
 
       function succeeded() {
         // Hide the fields, leave only the confirmation. Each form can override

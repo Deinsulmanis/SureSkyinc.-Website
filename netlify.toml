@@ -4,6 +4,7 @@
 [build]
   publish = "."
   command = ""
+  functions = "netlify/functions"
 
 # ---------------------------------------------------------------------------
 # Security headers (audited by most SEO / site-health tools)

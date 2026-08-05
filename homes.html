@@ -1074,10 +1074,15 @@
         <!-- LIVE FORM — submits to Formspree over fetch(), handled in script.js.
              `data-endpoint` is what switches on the live handler. The action/method
              below are a no-JS fallback only — with JS available the submit is
-             intercepted and there is no redirect. -->
+             intercepted and there is no redirect.
+
+             `data-notify` additionally fires a fire-and-forget SMS alert through
+             the Netlify Function. It runs alongside the Formspree post and never
+             affects the visible result: email stays the system of record. -->
         <form class="form-grid" id="estimateForm" novalidate
               action="https://formspree.io/f/moeaaala" method="POST"
-              data-endpoint="https://formspree.io/f/moeaaala">
+              data-endpoint="https://formspree.io/f/moeaaala"
+              data-notify="/.netlify/functions/notify-lead">
 
           <div class="form-grid form-grid--2" style="padding:0">
             <div class="field">
