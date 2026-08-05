@@ -257,6 +257,7 @@ body::after {
 .section--dark h2, .section--dark h3, .section--dark h4 { color: var(--white); }
 .section--sky { background: var(--sky-050); }
 .section--paper2 { background: var(--paper-2); }
+.section--white { background: var(--white); }
 
 /* Skip link */
 .skip-link {
@@ -2082,6 +2083,240 @@ form.is-sent > *:not(.form-status) { display: none; }
   max-width: 100%;
 }
 
+/* --- Mission statement ----------------------------------------------------
+   Sits directly off the hero, so it carries no eyebrow or heading — it reads
+   as one continuous thought with the lockup above it. */
+.mission { text-align: center; }
+.mission__text {
+  margin: 0 auto;
+  max-width: 62ch;
+  font-size: clamp(1.05rem, 1.5vw, 1.24rem);
+  line-height: 1.78;
+  color: var(--text);
+}
+.mission__close {
+  margin: var(--s-3) auto 0;
+  max-width: 48ch;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1rem, 1.5vw, 1.16rem);
+  line-height: 1.6;
+  color: var(--navy-900);
+}
+
+/* --- Body prose ----------------------------------------------------------- */
+.prose { max-width: 64ch; margin-inline: auto; }
+.prose p, .prose--single {
+  margin: 0;
+  font-size: 1.04rem;
+  line-height: 1.78;
+  color: var(--text-soft);
+}
+.prose p + p { margin-top: var(--s-3); }
+.prose--single { max-width: 64ch; margin-inline: auto; }
+
+/* Closing line for a section — the one place gold is allowed to carry weight */
+.statement {
+  margin: var(--s-5) auto 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.35rem, 3vw, 1.95rem);
+  line-height: 1.25;
+  letter-spacing: -.015em;
+  color: var(--navy-900);
+}
+.statement::after {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 2px;
+  margin: 18px auto 0;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* --- Why SureSky: five pillars, three over two ---------------------------- */
+.pillars { display: grid; gap: var(--s-3); }
+.pillar {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: var(--s-4);
+  transition: transform var(--slow) var(--ease),
+              box-shadow var(--slow) var(--ease),
+              border-color var(--slow) var(--ease);
+}
+.pillar:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-soft);
+}
+.pillar__icon {
+  display: grid;
+  place-items: center;
+  width: 52px; height: 52px;
+  margin-bottom: var(--s-2);
+  border-radius: var(--r-md);
+  background: var(--sky-050);
+  border: 1px solid var(--line);
+  color: var(--sky-ink);
+  transition: background-color var(--slow) var(--ease), color var(--slow) var(--ease);
+}
+.pillar__icon svg { width: 24px; height: 24px; }
+.pillar:hover .pillar__icon { background: var(--gold-soft); color: var(--gold-ink); }
+.pillar h3 {
+  margin-bottom: 10px;
+  font-size: .95rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--navy-900);
+}
+.pillar p { font-size: .96rem; color: var(--text-soft); }
+
+/* --- The bigger vision ----------------------------------------------------
+   The heaviest band on the page: navy field, gold wash, and the growth arc
+   drawn as a connected four-step run. */
+.vision { overflow: hidden; }
+.vision::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70ch 34ch at 50% 0%, rgba(var(--accent-rgb), .22), transparent 72%);
+  pointer-events: none;
+}
+.vision > .container { position: relative; z-index: 1; }
+.vision__title {
+  font-size: clamp(1.9rem, 4.4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -.025em;
+}
+.vision__title em { font-style: normal; color: var(--gold); }
+.vision__lead {
+  max-width: 68ch;
+  margin: 0 auto;
+  text-align: center;
+  font-size: clamp(1.02rem, 1.4vw, 1.14rem);
+  line-height: 1.78;
+  color: #A9BACC;
+}
+
+.vsteps {
+  list-style: none;
+  margin: var(--s-5) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--s-3);
+}
+.vstep {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+/* Connector between consecutive steps — vertical while the run is stacked,
+   flipped horizontal at the wide breakpoint. Drawn behind the icons. */
+.vstep + .vstep::before {
+  content: "";
+  position: absolute;
+  left: 27px;
+  top: calc(var(--s-3) * -1);
+  width: 1px;
+  height: var(--s-3);
+  background: rgba(209, 171, 82, .38);
+}
+.vstep__icon {
+  position: relative;
+  z-index: 1;                     /* sits over the connector rule */
+  display: grid;
+  place-items: center;
+  width: 56px; height: 56px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--navy-800);
+  border: 1px solid rgba(209, 171, 82, .38);
+  color: var(--gold);
+  transition: transform var(--slow) var(--ease),
+              background-color var(--slow) var(--ease),
+              border-color var(--slow) var(--ease);
+}
+.vstep__icon svg { width: 24px; height: 24px; }
+.vstep:hover .vstep__icon {
+  transform: translateY(-4px);
+  background: rgba(209, 171, 82, .14);
+  border-color: var(--gold);
+}
+.vstep__label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.35;
+  color: var(--white);
+}
+
+.vision__close {
+  max-width: 58ch;
+  margin: var(--s-5) auto 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+  line-height: 1.45;
+  color: var(--white);
+}
+.vision__close::before {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 2px;
+  margin: 0 auto var(--s-3);
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* --- Our promise ---------------------------------------------------------- */
+.promise__title { font-size: clamp(1.5rem, 3.2vw, 2.15rem); line-height: 1.22; }
+/* Kicker and list share one 720px column so their left edges line up */
+.promise__kicker {
+  max-width: 720px;
+  margin: var(--s-4) auto 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.02rem;
+  letter-spacing: .04em;
+  color: var(--navy-900);
+}
+.promise-list {
+  list-style: none;
+  margin: var(--s-2) auto 0;
+  padding: 0;
+  max-width: 720px;
+  display: grid;
+  gap: 0;
+}
+.promise-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: var(--navy-900);
+}
+.promise-list li svg { width: 18px; height: 18px; flex: none; color: var(--gold-ink); }
+
+/* --- Closing CTA ---------------------------------------------------------- */
+.endcta { margin: 0; text-align: center; }
+.endcta::before {
+  content: "";
+  display: block;
+  width: min(220px, 46%);
+  height: 1px;
+  margin: 0 auto var(--s-4);
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
 /* --- Divisions ------------------------------------------------------------ */
 .dgrid {
   display: grid;
@@ -2266,6 +2501,8 @@ form.is-sent > *:not(.form-status) { display: none; }
   .division--feature { display: grid; grid-template-columns: 1.05fr 1fr; }
   .division--feature .division__banner { height: 100%; min-height: 300px; }
   .dgrid { grid-template-columns: repeat(3, 1fr); }
+  .pillars { grid-template-columns: repeat(2, 1fr); }
+  .promise-list { grid-template-columns: repeat(2, 1fr); column-gap: var(--s-4); }
 }
 
 /* The drawer carries its own CTA for mobile; on desktop the header CTA in
@@ -2305,6 +2542,26 @@ form.is-sent > *:not(.form-status) { display: none; }
   .wblock { grid-template-columns: .32fr .68fr; gap: var(--s-5); }
   .footer__grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: var(--s-5); }
   .values { grid-template-columns: repeat(3, 1fr); }
+
+  /* Five pillars as three over two, the bottom pair centred under the top
+     row. A six-column track makes each card two columns wide, so the offset
+     row is an offset start rather than a separate grid. */
+  .pillars { grid-template-columns: repeat(6, 1fr); }
+  .pillar { grid-column: span 2; }
+  .pillar:nth-child(4) { grid-column: 2 / span 2; }
+  .pillar:nth-child(5) { grid-column: 4 / span 2; }
+
+  /* The growth arc turns into a connected horizontal run */
+  .vsteps { grid-template-columns: repeat(4, 1fr); gap: var(--s-2); }
+  .vstep { flex-direction: column; text-align: center; gap: 16px; }
+  .vstep__label { font-size: .97rem; max-width: 18ch; }
+  .vstep + .vstep::before {
+    top: 28px;
+    left: auto;
+    right: 50%;
+    width: 100%;
+    height: 1px;
+  }
 }
 
 /* Mobile nav */
@@ -2429,6 +2686,8 @@ form.is-sent > *:not(.form-status) { display: none; }
   .fab-estimate, .fab-estimate:hover, .fab-estimate:active,
   .card:hover, .svc:hover, .tier:hover, .review:hover,
   .value:hover, .division:hover, .system:hover, .platform:hover,
+  .pillar:hover, .vstep:hover .vstep__icon,
+  .docbtn:hover, .mapchip:hover, .report:hover,
   .logo:hover, .step:hover {
     transform: none !important;
     animation: none !important;
