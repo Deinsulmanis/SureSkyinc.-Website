@@ -16,13 +16,40 @@
   /* ------------------------------------------------------------------
      Sticky header shadow
      ------------------------------------------------------------------ */
+  /* ------------------------------------------------------------------
+     Scroll-aware header
+     Transparent while the hero is behind it, frosted-solid once the hero has
+     passed. Threshold is the hero's own height (falling back to 90px) so the
+     flip lands exactly where the dark/light backdrop changes. rAF-throttled:
+     the scroll handler only ever schedules one measurement per frame.
+     ------------------------------------------------------------------ */
   var header = document.getElementById('siteHeader');
+  var heroEl = document.querySelector('.hero, .intro-hero');
+
   if (header) {
-    var onScrollHeader = function () {
-      header.classList.toggle('is-stuck', window.scrollY > 8);
-    };
-    onScrollHeader();
-    window.addEventListener('scroll', onScrollHeader, { passive: true });
+    var navTicking = false;
+
+    function solidThreshold() {
+      if (!heroEl) return 90;
+      // flip as the hero's bottom edge meets the underside of the bar
+      return Math.max(90, heroEl.offsetTop + heroEl.offsetHeight - header.offsetHeight);
+    }
+
+    function syncHeader() {
+      header.classList.toggle('is-solid', window.scrollY > solidThreshold());
+      navTicking = false;
+    }
+
+    function onHeaderScroll() {
+      if (navTicking) return;
+      navTicking = true;
+      window.requestAnimationFrame(syncHeader);
+    }
+
+    syncHeader();
+    window.addEventListener('scroll', onHeaderScroll, { passive: true });
+    window.addEventListener('resize', onHeaderScroll);
+    window.addEventListener('load', syncHeader);
   }
 
   /* ------------------------------------------------------------------
@@ -57,6 +84,13 @@
     // Close after tapping any link inside the drawer
     navLinks.addEventListener('click', function (e) {
       if (e.target.closest('a')) closeNav();
+    });
+
+    // Close on a tap outside the drawer and the toggle
+    document.addEventListener('click', function (e) {
+      if (!navLinks.classList.contains('is-open')) return;
+      if (navLinks.contains(e.target) || navToggle.contains(e.target)) return;
+      closeNav();
     });
 
     // Close on resize back to desktop
