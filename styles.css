@@ -2452,6 +2452,37 @@ form.is-sent > *:not(.form-status) { display: none; }
 /* --- Closing CTA ---------------------------------------------------------- */
 .endcta { margin: 0; text-align: center; }
 
+/* --- Head-office contact form ---------------------------------------------
+   Sits under the routing band, so it is visibly the secondary path: a plain
+   white card rather than a second dark panel competing with it. Fields,
+   validation states and status message all reuse the shared form system. */
+.page-inc .form-card { margin-top: var(--s-3); }
+.form-card__title {
+  margin-bottom: 5px;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(1.2rem, 2.2vw, 1.55rem);
+  font-variation-settings: "opsz" 96;
+  letter-spacing: -.02em;
+  text-transform: none;
+  color: var(--navy-900);
+}
+.form-card__sub {
+  margin: 0 0 var(--s-3);
+  font-size: .95rem;
+  line-height: 1.65;
+  color: var(--text-soft);
+}
+/* Marks a field as not required, opposite of .req */
+.field__opt {
+  margin-left: 6px;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
 /* --- One hover speed across the page --------------------------------------
    These elements each shipped with their own duration (180/240/300ms). The
    inconsistency is small but it is exactly what makes a surface feel

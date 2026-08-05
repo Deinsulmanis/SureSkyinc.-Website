@@ -464,11 +464,15 @@
       }
 
       function succeeded() {
-        // Hide the fields, leave only the confirmation
+        // Hide the fields, leave only the confirmation. Each form can override
+        // the wording — the Homes estimate request and a head-office enquiry
+        // should not confirm in the same words. Defaults keep Homes unchanged.
         form.classList.add('is-sent');
-        var s = showStatus(form, 'ok',
-          '<strong>Thanks! Your estimate request is in.</strong>' +
-          'SureSky will be in touch shortly — usually within one business day.');
+        var okTitle = form.getAttribute('data-success-title') ||
+          'Thanks! Your estimate request is in.';
+        var okBody = form.getAttribute('data-success-body') ||
+          'SureSky will be in touch shortly — usually within one business day.';
+        var s = showStatus(form, 'ok', '<strong>' + okTitle + '</strong>' + okBody);
         if (s) {
           s.focus();
           s.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });

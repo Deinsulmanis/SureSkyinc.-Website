@@ -28,7 +28,7 @@
 
 <link rel="preload" href="assets/fonts/Manrope-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Fraunces-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=20260805d">
+<link rel="stylesheet" href="styles.css?v=20260805e">
 
 <script type="application/ld+json">
 {
@@ -72,6 +72,8 @@
   <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.9 18a2 2 0 0 0 1.7 3h16.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
 </svg>
 
 <!-- ============================================================
@@ -436,6 +438,74 @@
         <a class="btn btn--onDark" href="tel:+15875014389">Call 587-501-4389</a>
       </div>
     </div>
+
+    <div class="form-card reveal">
+      <h3 class="form-card__title">Send Us a Message</h3>
+      <p class="form-card__sub">
+        Head-office enquiries — partnerships, careers, or anything that isn't a roof.
+      </p>
+
+      <!-- LIVE FORM — shares the Formspree endpoint and the fetch() handler in
+           script.js with the Homes estimate form; the two are told apart by
+           their _subject. `data-endpoint` is what switches the live handler on.
+           The action/method below are a no-JS fallback only. -->
+      <form class="form-grid" id="incForm" novalidate
+            action="https://formspree.io/f/moeaaala" method="POST"
+            data-endpoint="https://formspree.io/f/moeaaala"
+            data-success-title="Thanks — SureSky will be in touch shortly."
+            data-success-body="We reply to head-office enquiries within one business day.">
+
+        <div class="form-grid form-grid--2" style="padding:0">
+          <div class="field">
+            <label for="c-name">Name <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="c-name" name="name" autocomplete="name" required placeholder="Jane Doe">
+            <span class="field__error" id="err-c-name">Please enter your name.</span>
+          </div>
+
+          <div class="field">
+            <label for="c-email">Email Address <span class="req" aria-hidden="true">*</span></label>
+            <input type="email" id="c-email" name="email" autocomplete="email" required placeholder="jane@example.com">
+            <span class="field__error" id="err-c-email">Please enter an email we can reply to.</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="c-phone">Phone Number <span class="field__opt">optional</span></label>
+          <input type="tel" id="c-phone" name="phone" autocomplete="tel" placeholder="587-000-0000">
+          <span class="field__error" id="err-c-phone">That doesn't look like a phone number we can reach.</span>
+        </div>
+
+        <div class="field">
+          <label for="c-message">Message <span class="req" aria-hidden="true">*</span></label>
+          <textarea id="c-message" name="message" required placeholder="Tell us what you're after and we'll point you to the right person."></textarea>
+          <span class="field__error" id="err-c-message">Please tell us a little about your enquiry.</span>
+        </div>
+
+        <!-- Formspree honeypot — bots fill this, humans never see it. -->
+        <div style="position:absolute;left:-9999px" aria-hidden="true">
+          <label for="c-gotcha">Company</label>
+          <input type="text" id="c-gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
+        </div>
+
+        <!-- Formspree meta. _replyto is filled from the email field on submit.
+             The recipient lives in the Formspree dashboard, never here. -->
+        <input type="hidden" name="_subject" value="New Inquiry — SureSky Inc Website">
+        <input type="hidden" name="_replyto" id="c-replyto">
+
+        <button class="btn btn--block" type="submit" id="incSubmit">Send Message</button>
+
+        <p class="form-note">
+          <svg aria-hidden="true"><use href="#i-lock"></use></svg>
+          <span>Your details reach the SureSky head office and nowhere else — never sold or shared.</span>
+        </p>
+
+        <!-- Success / error message. Text is set by script.js on submit. -->
+        <div class="form-status" id="incFormStatus" role="status" aria-live="polite" tabindex="-1">
+          <svg aria-hidden="true"><use href="#i-check"></use></svg>
+          <span class="form-status__text"></span>
+        </div>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -507,6 +577,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=20260805d" defer></script>
+<script src="script.js?v=20260805e" defer></script>
 </body>
 </html>
