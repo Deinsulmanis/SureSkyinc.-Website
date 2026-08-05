@@ -126,7 +126,7 @@
   /* Motion */
   --ease: cubic-bezier(.4, 0, .2, 1);
   --fast: 180ms;
-  --nav-t: 280ms;          /* scroll-aware nav transition */
+  --nav-t: 280ms;          /* nav colour transition */
   --base: 240ms;
   --slow: 300ms;
 
@@ -179,7 +179,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-h) + 16px);
+  scroll-padding-top: 16px;   /* nothing is pinned over the content */
   -webkit-text-size-adjust: 100%;
 }
 
@@ -469,30 +469,14 @@ body::after {
   50%      { opacity: .4; transform: scale(.7); }
 }
 
-/* Scroll-aware header.
-   Default state is TRANSPARENT so it blends into the hero, which is pulled up
-   underneath it (see .hero / .intro-hero margin-top). Once the hero has passed,
-   script.js adds .is-solid and it becomes a frosted bar.
-   Content colour is per-page: the Homes hero is dark so its nav sits light,
-   the Inc hero is light so its nav sits dark. */
+/* Static header.
+   The bar sits in normal flow at the top of the page and scrolls away with it —
+   nothing is pinned except the mobile hamburger (see the max-width: 959px
+   block). Solid white in one state, so nav content is always dark and the hero
+   starts below the bar rather than underneath it. */
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: 900;
-  background: transparent;
-  border-bottom: 1px solid transparent;
-  box-shadow: none;
-  transition: background-color var(--nav-t) var(--ease),
-              border-color var(--nav-t) var(--ease),
-              box-shadow var(--nav-t) var(--ease);
-}
-
-.site-header.is-solid {
-  background: rgba(255, 255, 255, .90);
-  backdrop-filter: blur(14px) saturate(1.3);
-  -webkit-backdrop-filter: blur(14px) saturate(1.3);
-  border-bottom-color: var(--line);
-  box-shadow: 0 6px 24px rgba(16, 35, 58, .10);
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
 }
 
 .nav {
@@ -500,23 +484,7 @@ body::after {
   align-items: center;
   gap: var(--s-3);
   min-height: var(--header-h);
-  transition: min-height var(--nav-t) var(--ease);
 }
-/* The bar settles slightly once scrolled */
-.site-header.is-solid .nav { min-height: calc(var(--header-h) - 12px); }
-
-/* ---- Transparent state over the DARK Homes hero: light content ---------- */
-.page-homes .site-header:not(.is-solid) .nav__link,
-.page-homes .site-header:not(.is-solid) .nav__phone { color: var(--white); }
-.page-homes .site-header:not(.is-solid) .nav__phone svg { color: var(--accent-on-dark); }
-.page-homes .site-header:not(.is-solid) .nav__divider { background: rgba(255, 255, 255, .30); }
-.page-homes .site-header:not(.is-solid) .nav__link::after { background: var(--white); }
-.page-homes .site-header:not(.is-solid) .nav__toggle {
-  background: rgba(255, 255, 255, .14);
-  border: 1px solid rgba(255, 255, 255, .38);
-}
-
-/* The Inc hero is light, so that nav stays dark in both states — no swap. */
 
 /* Logo lockup — horizontal brand lockups rebuilt from the supplied artwork */
 .logo {
@@ -527,17 +495,13 @@ body::after {
 }
 .logo:hover { opacity: .82; }
 
-.logo { position: relative; }
+/* One lockup in the brand colours at one fixed size. No reversed variant and
+   no scrolled state, so the mark never changes colour or height. */
 .logo__img {
   display: block;
-  height: 44px;      /* ~46px visual height in the sticky header */
+  height: 44px;      /* ~46px visual height in the header */
   width: auto;
-  transition: opacity var(--nav-t) var(--ease), height var(--nav-t) var(--ease);
 }
-/* One lockup in the brand colours, in every header state — transparent or
-   solid. No reversed variant, so the mark never changes colour on scroll.
-   Only the height settles with the bar. */
-.site-header.is-solid .logo__img { height: 38px; }
 
 /* Footer / dark-section chip.
    Both lockups are dark artwork (charcoal monogram, navy house) so they
@@ -625,11 +589,8 @@ body::after {
   position: relative;
   background: var(--navy-900);
   color: #D9E2EC;
-  /* Pulled up so the hero sits BEHIND the header, which is what makes the
-     transparent nav state possible. Top padding gains the header height back
-     so the content lands where it did before. */
-  margin-top: calc(var(--header-h) * -1);
-  padding-top: calc(var(--s-7) + var(--header-h));
+  /* Starts below the header, which is opaque and in normal flow. */
+  padding-top: var(--s-7);
   padding-bottom: var(--s-8);
   overflow: hidden;
   isolation: isolate;
@@ -1752,8 +1713,7 @@ form.is-sent > *:not(.form-status) { display: none; }
 .intro-hero {
   position: relative;
   background: var(--white);
-  margin-top: calc(var(--header-h) * -1);
-  padding-block: calc(clamp(48px, 7vw, 96px) + var(--header-h)) clamp(56px, 8vw, 104px);
+  padding-block: clamp(48px, 7vw, 96px) clamp(56px, 8vw, 104px);
   text-align: center;
   overflow: hidden;
 }
@@ -2171,9 +2131,21 @@ form.is-sent > *:not(.form-status) { display: none; }
 
 @media (min-width: 960px) {
   :root { --gutter: 40px; --header-h: 84px; }
+  /* Desktop only: the bar pins to the top of the viewport. Sticky keeps its
+     space in normal flow, so the hero still starts below it — no negative
+     offsets needed, and the colours are identical to the static state.
+     Below 960px the header scrolls away and only .nav__toggle is pinned. */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+  }
+  /* Anchor targets have to clear the pinned bar here; on mobile nothing
+     covers them, so the base rule stays at a plain 16px. */
+  html { scroll-padding-top: calc(var(--header-h) + 16px); }
   .section { padding-block: var(--s-7); }
   .section--tight { padding-block: var(--s-6); }
-  .hero { padding-top: calc(var(--s-8) + var(--header-h)); }
+  .hero { padding-top: var(--s-8); }
   .hero__grid { grid-template-columns: 1.12fr .88fr; gap: var(--s-6); }
   .feature { grid-template-columns: 1fr 1fr; gap: var(--s-6); }
   .feature--rev .feature__media { order: -1; }
@@ -2192,42 +2164,39 @@ form.is-sent > *:not(.form-status) { display: none; }
 
 /* Mobile nav */
 @media (max-width: 959px) {
-  /* CRITICAL: backdrop-filter makes .site-header the containing block for any
-     position:fixed descendant. The drawer lives inside the header, so with the
-     blur on it anchors to the header box instead of the viewport — top/bottom
-     over-constrain, the height collapses to a stub, and only the first link
-     shows. Dropping the blur on mobile restores viewport anchoring. The header
-     is made fully opaque here to compensate; desktop keeps the frosted look. */
-  /* Blur stays OFF on mobile: backdrop-filter would make .site-header the
-     containing block for the position:fixed drawer and collapse it. The solid
-     state is therefore fully opaque rather than frosted. */
-  .site-header {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background: transparent;
+  /* The hamburger is the ONE pinned element on the site. It is lifted out of
+     the bar with position:fixed so it stays reachable after the header has
+     scrolled away, and sits above the drawer (z-index 899) so it can always
+     close it. No ancestor may carry backdrop-filter/transform, or the button
+     would anchor to that box instead of the viewport. */
+  .nav__toggle {
+    display: grid;
+    position: fixed;
+    top: 12px;
+    right: var(--gutter);
+    z-index: 950;
+    /* The ring keeps the navy button legible on every backdrop it passes over
+       — the navy topbar at rest, white sections and the dark hero on scroll. */
+    border: 2px solid rgba(255, 255, 255, .92);
+    box-shadow: 0 6px 18px rgba(16, 35, 58, .28);
   }
-  .site-header.is-solid {
-    background: var(--white);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-  /* An open drawer always gets an opaque bar above it, whatever is behind.
-     Only the items in the BAR flip dark — .nav__link lives inside the drawer
-     on mobile, and darkening those would hide them on the navy panel. */
-  body.nav-open .site-header { background: var(--white); }
-  body.nav-open.page-homes .site-header .nav__phone { color: var(--navy-900); }
-  body.nav-open.page-homes .site-header .nav__phone svg { color: var(--accent-ink); }
-  body.nav-open.page-homes .site-header .nav__toggle {
-    background: var(--navy-900);
-    border: 0;
-  }
+  /* Reserve the space the fixed button vacated so it never covers the phone
+     number sitting at the end of the bar. */
+  .nav { padding-right: 58px; }
+  /* Navy-on-navy would disappear against the open drawer, so the button
+     inverts while it is showing the close X. */
+  body.nav-open .nav__toggle { background: var(--white); }
+  body.nav-open .nav__toggle span { background: var(--navy-900); }
+  /* Both floating widgets outrank the drawer, so stand them down while it is
+     open rather than letting them punch through the panel. */
+  body.nav-open .fab-estimate,
+  body.nav-open .nudge { display: none; }
 
-  .nav__toggle { display: grid; }
   .nav__phone .nav__phone-label { display: none; }
   .nav__links {
     position: fixed;
-    /* `top` is overridden inline by script.js so the drawer always starts
-       exactly below the header, whether or not the topbar has scrolled away. */
+    /* `top` is overridden inline by script.js so the drawer starts just below
+       the header at rest, and full-height once the header has scrolled off. */
     inset: var(--header-h) 0 0;
     background: var(--navy-900);
     flex-direction: column;
@@ -2260,7 +2229,7 @@ form.is-sent > *:not(.form-status) { display: none; }
 
 @media (max-width: 719px) {
   /* Keep the hero headline and CTA high on small screens */
-  .hero { padding-top: calc(var(--s-4) + var(--header-h)); padding-bottom: var(--s-7); }
+  .hero { padding-top: var(--s-4); padding-bottom: var(--s-7); }
   .hero__logo--chip { padding: 9px 14px; }
   .hero__logo--chip img { height: 46px; }
   .hero__trust { padding: 7px 13px 7px 9px; font-size: .8rem; margin-bottom: var(--s-2); }
@@ -2314,9 +2283,6 @@ form.is-sent > *:not(.form-status) { display: none; }
     animation: none !important;
   }
   .btn::after { display: none; }          /* no sheen sweep */
-  /* Keep the colour/background change, drop the size motion */
-  .site-header.is-solid .nav { min-height: var(--header-h); }
-  .site-header.is-solid .logo__img { height: 44px; }
   .btn:hover .btn__arrow,
   .tlink:hover::after { transform: none !important; }
 }

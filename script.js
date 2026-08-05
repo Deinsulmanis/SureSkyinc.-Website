@@ -14,47 +14,12 @@
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   /* ------------------------------------------------------------------
-     Sticky header shadow
-     ------------------------------------------------------------------ */
-  /* ------------------------------------------------------------------
-     Scroll-aware header
-     Transparent while the hero is behind it, frosted-solid once the hero has
-     passed. Threshold is the hero's own height (falling back to 90px) so the
-     flip lands exactly where the dark/light backdrop changes. rAF-throttled:
-     the scroll handler only ever schedules one measurement per frame.
+     Mobile navigation
+     The header itself is static and scrolls away — no scroll listener needed
+     for it. Only the hamburger is pinned, and that is pure CSS. The header is
+     still measured here to place the drawer beneath it.
      ------------------------------------------------------------------ */
   var header = document.getElementById('siteHeader');
-  var heroEl = document.querySelector('.hero, .intro-hero');
-
-  if (header) {
-    var navTicking = false;
-
-    function solidThreshold() {
-      if (!heroEl) return 90;
-      // flip as the hero's bottom edge meets the underside of the bar
-      return Math.max(90, heroEl.offsetTop + heroEl.offsetHeight - header.offsetHeight);
-    }
-
-    function syncHeader() {
-      header.classList.toggle('is-solid', window.scrollY > solidThreshold());
-      navTicking = false;
-    }
-
-    function onHeaderScroll() {
-      if (navTicking) return;
-      navTicking = true;
-      window.requestAnimationFrame(syncHeader);
-    }
-
-    syncHeader();
-    window.addEventListener('scroll', onHeaderScroll, { passive: true });
-    window.addEventListener('resize', onHeaderScroll);
-    window.addEventListener('load', syncHeader);
-  }
-
-  /* ------------------------------------------------------------------
-     Mobile navigation
-     ------------------------------------------------------------------ */
   var navToggle = document.getElementById('navToggle');
   var navLinks = document.getElementById('navLinks');
 
@@ -65,8 +30,9 @@
     document.body.classList.remove('nav-open');
   }
 
-  // Anchor the drawer directly beneath the header — its offset changes once
-  // the top utility bar has scrolled away.
+  // Anchor the drawer directly beneath the header. The header is static, so
+  // once the page has scrolled past it this clamps to 0 and the drawer opens
+  // full-height from the top of the viewport.
   function positionDrawer() {
     if (!navLinks || !header || window.innerWidth >= 960) return;
     navLinks.style.top = Math.max(0, header.getBoundingClientRect().bottom) + 'px';
