@@ -27,7 +27,8 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-inc-180.png">
 
 <link rel="preload" href="assets/fonts/Manrope-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=20260805c">
+<link rel="preload" href="assets/fonts/Fraunces-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css?v=20260805d">
 
 <script type="application/ld+json">
 {
@@ -71,15 +72,6 @@
   <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></symbol>
   <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></symbol>
-  <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
-  <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3"/></symbol>
-  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5.5v6c0 5 3.4 9.2 8 10.5 4.6-1.3 8-5.5 8-10.5v-6z"/><path d="m9 12 2 2 4-4"/></symbol>
-  <symbol id="i-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.4 14.1-1.4 7.4 5-2.9 5 2.9-1.4-7.4"/></symbol>
-  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.6 20a6.4 6.4 0 0 1 12.8 0"/><path d="M16.8 5.4a3.2 3.2 0 0 1 0 5.2M18.4 14.4A6.4 6.4 0 0 1 21.4 20"/></symbol>
-  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
-  <symbol id="i-hammer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4 9 9l2 2 5-5z"/><path d="m16 2 6 6-2.5 2.5-6-6z"/><path d="M11 11 3 19l2 2 8-8z"/></symbol>
-  <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 9 5-9 5-9-5z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></symbol>
-  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.2 12 3l9 8.2"/><path d="M5.5 9.8V20h13V9.8"/><path d="M9.8 20v-5.4h4.4V20"/></symbol>
 </svg>
 
 <!-- ============================================================
@@ -157,11 +149,11 @@
 
     <p class="motto"><span class="motto__text">Be Sure About Your Sky</span></p>
 
-    <h1 class="intro-hero__title">Alberta Owned.<br><em>Homeowner Focused.</em></h1>
+    <h1 class="intro-hero__title">Alberta homeowners deserve a company that <em>stays</em>.</h1>
 
     <p class="intro-hero__cta">
       <a class="btn btn--xl" href="homes.html">
-        Explore Our Roofing Services Through SureSky Homes
+        See Our Roofing
         <span class="btn__arrow" aria-hidden="true">&rarr;</span>
       </a>
     </p>
@@ -174,7 +166,7 @@
 <!-- ============================================================
      MISSION — the lead-in statement, straight off the hero
      ============================================================ -->
-<section class="section section--tight section--white mission">
+<section class="section section--snug section--white mission">
   <div class="container container--narrow">
     <p class="mission__text reveal">
       SureSky Inc. is an Alberta-owned company built around one simple idea: home services
@@ -193,89 +185,113 @@
 <!-- ============================================================
      WHO WE ARE
      ============================================================ -->
-<section class="section" id="about">
-  <div class="container container--narrow">
-    <div class="section-head section-head--center reveal">
-      <p class="eyebrow">Who We Are</p>
-      <h2>More Than a Home Services Company.</h2>
-      <p class="lead" style="margin-inline:auto">We're building a better way to care for your home.</p>
+<section class="section section--rule" id="about">
+  <div class="container">
+
+    <div class="split reveal">
+      <div class="split__lead">
+        <p class="eyebrow">Who We Are</p>
+        <h2 class="dtitle">More Than a Home Services Company.</h2>
+        <p class="split__sub">A better way to care for your home.</p>
+      </div>
+
+      <div class="split__body">
+        <p>
+          Home improvement shouldn't feel complicated. Homeowners shouldn't have to become
+          project managers, coordinate multiple contractors, wonder who to trust, or feel lost
+          once the work begins.
+        </p>
+        <p>
+          SureSky Inc. was created to make that experience simpler. We are building a company
+          around specialization, transparency, accountability and the homeowner experience.
+        </p>
+        <p>
+          Our divisions focus on their individual crafts, while SureSky Inc. provides the
+          structure and standards that bring everything together.
+        </p>
+      </div>
     </div>
 
-    <div class="prose reveal">
-      <p>
-        Home improvement shouldn't feel complicated. Homeowners shouldn't have to become
-        project managers, coordinate multiple contractors, wonder who to trust, or feel lost
-        once the work begins.
-      </p>
-      <p>
-        SureSky Inc. was created to make that experience simpler. We are building a company
-        around specialization, transparency, accountability and the homeowner experience.
-      </p>
-      <p>
-        Our divisions focus on their individual crafts, while SureSky Inc. provides the
-        structure and standards that bring everything together.
-      </p>
-    </div>
-
-    <p class="statement reveal">One company. One standard.</p>
+    <p class="statement reveal">One company. <em>One standard.</em></p>
   </div>
 </section>
 
 <!-- ============================================================
-     WHY SURESKY — five pillars, 3 over 2
+     SKY BAND — a full-bleed navy field carrying the motto a second time.
+     No imagery: the band is drawn in the site palette so it reads as part
+     of the system rather than as dropped-in artwork.
      ============================================================ -->
-<section class="section section--sky" id="why">
+<section class="skyband" aria-labelledby="skyband-motto">
+  <p class="skyband__motto" id="skyband-motto">
+    <span class="signature">Be Sure About Your Sky</span>
+  </p>
+</section>
+
+<!-- ============================================================
+     WHY SURESKY — five values as a numbered editorial list
+     ============================================================ -->
+<section class="section section--rule section--airy" id="why">
   <div class="container">
-    <div class="section-head section-head--center reveal">
+    <div class="section-head reveal">
       <p class="eyebrow">Why SureSky</p>
-      <h2>Why We're Different</h2>
-      <p class="lead" style="margin-inline:auto">
-        We put the homeowner first. There are plenty of contractors — we're building something
+      <h2 class="dtitle">Why We're Different</h2>
+      <p class="lead">
+        We put the homeowner first. There are plenty of contractors. We're after something
         different.
       </p>
     </div>
 
-    <div class="pillars">
-      <article class="pillar reveal">
-        <span class="pillar__icon" aria-hidden="true"><svg><use href="#i-eye"></use></svg></span>
-        <h3>Transparency</h3>
-        <p>Clear communication, straightforward expectations and no unnecessary confusion.</p>
-      </article>
-      <article class="pillar reveal">
-        <span class="pillar__icon" aria-hidden="true"><svg><use href="#i-target"></use></svg></span>
-        <h3>Specialization</h3>
-        <p>The right professionals focused on the work they know best.</p>
-      </article>
-      <article class="pillar reveal">
-        <span class="pillar__icon" aria-hidden="true"><svg><use href="#i-shield"></use></svg></span>
-        <h3>Accountability</h3>
-        <p>We take responsibility for the work we do for the community.</p>
-      </article>
-      <article class="pillar reveal">
-        <span class="pillar__icon" aria-hidden="true"><svg><use href="#i-award"></use></svg></span>
-        <h3>Quality</h3>
-        <p>Good work shouldn't be something you have to hope for. It should be the standard.</p>
-      </article>
-      <article class="pillar reveal">
-        <span class="pillar__icon" aria-hidden="true"><svg><use href="#i-users"></use></svg></span>
-        <h3>Long-Term Relationships</h3>
-        <p>
-          We're not interested in being a company you call once. We're building relationships
-          that last through the life of your home.
-        </p>
-      </article>
-    </div>
+    <ol class="vlist">
+      <li class="vitem reveal">
+        <span class="vitem__num" aria-hidden="true">01</span>
+        <div class="vitem__body">
+          <h3>Transparency</h3>
+          <p>Clear communication, straightforward expectations and no unnecessary confusion.</p>
+        </div>
+      </li>
+      <li class="vitem reveal">
+        <span class="vitem__num" aria-hidden="true">02</span>
+        <div class="vitem__body">
+          <h3>Specialization</h3>
+          <p>The right professionals focused on the work they know best.</p>
+        </div>
+      </li>
+      <li class="vitem reveal">
+        <span class="vitem__num" aria-hidden="true">03</span>
+        <div class="vitem__body">
+          <h3>Accountability</h3>
+          <p>We take responsibility for the work we do for the community.</p>
+        </div>
+      </li>
+      <li class="vitem reveal">
+        <span class="vitem__num" aria-hidden="true">04</span>
+        <div class="vitem__body">
+          <h3>Quality</h3>
+          <p>Good work shouldn't be something you have to hope for. It should be the standard.</p>
+        </div>
+      </li>
+      <li class="vitem reveal">
+        <span class="vitem__num" aria-hidden="true">05</span>
+        <div class="vitem__body">
+          <h3>Long-Term Relationships</h3>
+          <p>
+            We're not interested in being a company you call once. We're building relationships
+            that last through the life of your home.
+          </p>
+        </div>
+      </li>
+    </ol>
   </div>
 </section>
 
 <!-- ============================================================
      THE BIGGER VISION — the standout band on the page
      ============================================================ -->
-<section class="section section--dark vision" id="vision">
+<section class="section section--dark section--airy vision" id="vision">
   <div class="container">
     <div class="section-head section-head--center reveal">
       <p class="eyebrow">The Bigger Vision</p>
-      <h2 class="vision__title">More Than a Roof.<br><em>We're Building Something Bigger.</em></h2>
+      <h2 class="vision__title">More Than a Roof.<br><em>Something Bigger Is Taking Shape.</em></h2>
     </div>
 
     <p class="vision__lead reveal">
@@ -284,28 +300,32 @@
       developing specialized divisions across home services and other industries —
     </p>
 
-    <ol class="vsteps reveal">
-      <li class="vstep">
-        <span class="vstep__icon" aria-hidden="true"><svg><use href="#i-search"></use></svg></span>
-        <span class="vstep__label">The first roof inspection</span>
+    <ol class="track reveal">
+      <li class="track__stop">
+        <span class="track__num" aria-hidden="true">01</span>
+        <span class="track__rail" aria-hidden="true"><span class="track__dot"></span></span>
+        <span class="track__label">The first roof inspection</span>
       </li>
-      <li class="vstep">
-        <span class="vstep__icon" aria-hidden="true"><svg><use href="#i-hammer"></use></svg></span>
-        <span class="vstep__label">Renovations</span>
+      <li class="track__stop">
+        <span class="track__num" aria-hidden="true">02</span>
+        <span class="track__rail" aria-hidden="true"><span class="track__dot"></span></span>
+        <span class="track__label">Renovations</span>
       </li>
-      <li class="vstep">
-        <span class="vstep__icon" aria-hidden="true"><svg><use href="#i-layers"></use></svg></span>
-        <span class="vstep__label">Major construction projects</span>
+      <li class="track__stop">
+        <span class="track__num" aria-hidden="true">03</span>
+        <span class="track__rail" aria-hidden="true"><span class="track__dot"></span></span>
+        <span class="track__label">Major construction projects</span>
       </li>
-      <li class="vstep">
-        <span class="vstep__icon" aria-hidden="true"><svg><use href="#i-home"></use></svg></span>
-        <span class="vstep__label">And eventually, new homes</span>
+      <li class="track__stop">
+        <span class="track__num" aria-hidden="true">04</span>
+        <span class="track__rail" aria-hidden="true"><span class="track__dot"></span></span>
+        <span class="track__label">And eventually, new homes</span>
       </li>
     </ol>
 
     <p class="vision__close reveal">
-      Our vision is simple: build a company Alberta homeowners can trust throughout the life
-      of their home.
+      Our vision is simple: a company Alberta homeowners can trust throughout the life of
+      their home.
     </p>
   </div>
 </section>
@@ -313,7 +333,7 @@
 <!-- ============================================================
      OUR PROMISE
      ============================================================ -->
-<section class="section section--white" id="promise">
+<section class="section section--white section--rule" id="promise">
   <div class="container container--narrow">
     <div class="section-head section-head--center reveal">
       <p class="eyebrow">Our Promise</p>
@@ -338,7 +358,7 @@
       <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Someone they can call again.</li>
     </ul>
 
-    <p class="statement reveal">That's the standard we're building.</p>
+    <p class="statement reveal">That's the standard <em>we set.</em></p>
   </div>
 </section>
 
@@ -349,7 +369,7 @@
   <div class="container container--narrow">
     <p class="endcta reveal">
       <a class="btn btn--xl" href="homes.html">
-        Explore Our Roofing Services Through SureSky Homes
+        See Our Roofing
         <span class="btn__arrow" aria-hidden="true">&rarr;</span>
       </a>
     </p>
@@ -359,7 +379,7 @@
 <!-- ============================================================
      OUR DIVISIONS — one live, room reserved for more
      ============================================================ -->
-<section class="section section--tight" id="divisions">
+<section class="section section--tight section--rule" id="divisions">
   <div class="container">
     <div class="section-head section-head--center reveal">
       <p class="eyebrow">Our Divisions</p>
@@ -487,6 +507,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=20260805c" defer></script>
+<script src="script.js?v=20260805d" defer></script>
 </body>
 </html>

@@ -6,14 +6,28 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   0. FONT — Manrope, self-hosted variable (weights 200–800 in one 53 KB file)
-   SIL Open Font License, see assets/fonts/OFL.txt
+   0. FONTS — both self-hosted variable, no CDN
+   Manrope  — body, UI, labels (weights 200–800, 53 KB)
+   Fraunces — display only: H1, section headlines, statement lines (67 KB)
+              Two axes: wght 300–900 and opsz 9–144. Its DEFAULT instance is
+              wght 900 / opsz 9, so anything using it must set font-weight
+              explicitly or it lands at black. Optical size is driven up on
+              large headlines for the high-contrast, editorial cut.
+   SIL Open Font License — see assets/fonts/OFL-Manrope.txt and OFL-Fraunces.txt
    -------------------------------------------------------------------------- */
 @font-face {
   font-family: "Manrope";
   src: url("assets/fonts/Manrope-Variable.woff2") format("woff2-variations"),
        url("assets/fonts/Manrope-Variable.woff2") format("woff2");
   font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("assets/fonts/Fraunces-Variable.woff2") format("woff2-variations"),
+       url("assets/fonts/Fraunces-Variable.woff2") format("woff2");
+  font-weight: 300 900;
   font-style: normal;
   font-display: swap;
 }
@@ -129,10 +143,16 @@
   --nav-t: 280ms;          /* nav colour transition */
   --base: 240ms;
   --slow: 300ms;
+  /* One duration for every interactive hover on the Inc page, so the whole
+     surface responds at the same speed rather than at four different ones. */
+  --hover-t: 250ms;
 
   /* Type */
   --font: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-display: var(--font);
+  /* Editorial serif. Applied ONLY to major headlines on .page-inc — the Homes
+     page keeps its all-Manrope industrial voice untouched. */
+  --font-serif: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
 
   /* Layout */
   --container: 1200px;
@@ -258,6 +278,21 @@ body::after {
 .section--sky { background: var(--sky-050); }
 .section--paper2 { background: var(--paper-2); }
 .section--white { background: var(--white); }
+/* Hairline between major sections — editorial structure without a divider
+   graphic. Inset from the gutters so it reads as a rule, not a border. */
+.section--rule::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--gutter);
+  right: var(--gutter);
+  height: 1px;
+  background: var(--line);
+}
+/* Airier and tighter section rhythms, so the page does not march at one
+   identical interval from top to bottom. */
+.section--airy { padding-block: calc(var(--s-6) * 1.5); }
+.section--snug { padding-block: var(--s-5) var(--s-6); }
 
 /* Skip link */
 .skip-link {
@@ -1951,10 +1986,28 @@ form.is-sent > *:not(.form-status) { display: none; }
 
 /* --------------------------------------------------------------------------
    18a. SURESKY INC — INTRO PAGE
-   A light, centred, symmetrical composition on a single vertical axis, with
-   a controlled text measure and one rhythm of vertical spacing. Deliberately
-   calmer than the Homes page: white + blue, gold only as fine detail.
+   Editorial, not symmetrical: a centred hero and mission, then a left-aligned
+   split, a hairline-divided list, and a dark band, so the rhythm changes as
+   you scroll instead of repeating one centred stack. Fraunces carries the
+   headlines, Manrope everything else. Palette is white + navy with gold as a
+   signature detail only — one gold moment per section, never a fill.
    -------------------------------------------------------------------------- */
+
+/* Grain over the dark bands. Flat navy gradients are the flattest, most
+   obviously-generated surface on a page; a little tooth kills that. */
+.page-inc .section--dark::after,
+.page-inc .skyband::after,
+.page-inc .cta-band::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
 .intro-hero {
   position: relative;
   background: var(--white);
@@ -2020,12 +2073,13 @@ form.is-sent > *:not(.form-status) { display: none; }
   z-index: 0;                     /* wordmark anchored behind */
 }
 
-/* Motto — a deliberate tagline moment, flanked by fine gold rules */
+/* Motto as the brand signature — the light-surface twin of .signature on the
+   sky band. Serif italic, generously set, flanked by fine gold rules. */
 .motto {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(14px, 3vw, 24px);
+  gap: clamp(14px, 3vw, 26px);
   margin-top: clamp(26px, 3.6vw, 40px);
 }
 .motto::before,
@@ -2038,23 +2092,27 @@ form.is-sent > *:not(.form-status) { display: none; }
 .motto::before { background: linear-gradient(90deg, transparent, var(--gold)); }
 .motto::after  { background: linear-gradient(90deg, var(--gold), transparent); }
 .motto__text {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(.82rem, 1.7vw, 1.05rem);
-  letter-spacing: .3em;
-  text-transform: uppercase;
-  color: var(--gold-ink);
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.15rem, 2.8vw, 1.85rem);
+  font-variation-settings: "opsz" 144;
+  letter-spacing: .012em;
+  color: var(--navy-900);
   white-space: nowrap;
 }
 
+/* The one H1. Serif, mixed case, tight — the largest thing on the page after
+   the lockup, with a single gold word carrying the claim. */
 .intro-hero__title {
-  margin: clamp(22px, 3vw, 34px) 0 0;
-  font-size: clamp(1.75rem, 4vw, 2.9rem);
-  line-height: 1.12;
-  letter-spacing: -.025em;
+  margin: clamp(24px, 3.2vw, 38px) auto 0;
+  max-width: 17ch;
+  font-size: clamp(2rem, 5.4vw, 3.7rem);
+  line-height: 1.04;
+  letter-spacing: -.032em;
   color: var(--navy-900);
 }
-.intro-hero__title em { font-style: normal; color: var(--sky-ink); }
+.intro-hero__title em { font-style: italic; color: var(--gold-ink); }
 
 .intro-hero__lead {
   margin: clamp(16px, 2.2vw, 22px) auto 0;
@@ -2083,207 +2141,291 @@ form.is-sent > *:not(.form-status) { display: none; }
   max-width: 100%;
 }
 
+/* --- Editorial display type ------------------------------------------------
+   Fraunces carries ONLY the major headlines on this page. Everything else —
+   buttons, eyebrows, labels, nav, footer — stays Manrope, and the Homes page
+   is untouched because every rule here is scoped to .page-inc.
+
+   The base h1/h2 are uppercase Manrope 800 with tight tracking; a high-contrast
+   serif wants the opposite, so these reset the case and open the weight up.
+   opsz is pushed toward the display cut so the thick/thin contrast reads. */
+.page-inc h1,
+.page-inc h2,
+.page-inc .dtitle,
+.page-inc .statement,
+.page-inc .cta-band h2 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: -.028em;
+  font-variation-settings: "opsz" 120;
+}
+.page-inc h3 { letter-spacing: -.005em; }
+
+/* Eyebrows go the other way — small, quiet, widely tracked. The contrast
+   between these and the headlines is what makes the hierarchy feel set
+   rather than defaulted. */
+.page-inc .eyebrow {
+  font-size: .7rem;
+  letter-spacing: .28em;
+  color: var(--ink-soft);
+  margin-bottom: var(--s-3);
+}
+/* Grey, not gold: an eyebrow appears in every section, so gilding it would
+   turn the accent into a repeating device instead of a signature. */
+.page-inc .eyebrow::before { width: 22px; height: 1px; background: var(--line); }
+.page-inc .section--dark .eyebrow { color: rgba(255, 255, 255, .62); }
+
 /* --- Mission statement ----------------------------------------------------
    Sits directly off the hero, so it carries no eyebrow or heading — it reads
    as one continuous thought with the lockup above it. */
 .mission { text-align: center; }
 .mission__text {
   margin: 0 auto;
-  max-width: 62ch;
-  font-size: clamp(1.05rem, 1.5vw, 1.24rem);
-  line-height: 1.78;
+  max-width: 60ch;
+  font-size: clamp(1.06rem, 1.5vw, 1.22rem);
+  line-height: 1.8;
   color: var(--text);
 }
 .mission__close {
-  margin: var(--s-3) auto 0;
-  max-width: 48ch;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(1rem, 1.5vw, 1.16rem);
-  line-height: 1.6;
+  margin: var(--s-4) auto 0;
+  max-width: 44ch;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(1.14rem, 2vw, 1.5rem);
+  font-variation-settings: "opsz" 96;
+  line-height: 1.5;
+  letter-spacing: -.02em;
   color: var(--navy-900);
 }
+
+/* --- Statement line — the closing beat of a section ------------------------
+   One gold emphasis, no rules or fills. This is the whole gold budget for
+   the sections it appears in. */
+.statement {
+  margin: var(--s-6) auto 0;
+  max-width: 22ch;
+  text-align: center;
+  font-weight: 500;
+  font-size: clamp(1.7rem, 4.4vw, 3rem);
+  line-height: 1.14;
+  color: var(--navy-900);
+}
+.statement em { font-style: normal; color: var(--gold-ink); }
+
+/* --- Who we are: two-column editorial split -------------------------------
+   Deliberately asymmetric and left-aligned, against the centred rhythm of the
+   mission above and the vision below. */
+.split { display: grid; gap: var(--s-4); }
+.split__lead .dtitle {
+  font-size: clamp(1.8rem, 3.6vw, 2.9rem);
+  line-height: 1.08;
+  margin-bottom: var(--s-2);
+}
+.split__sub {
+  margin: 0;
+  max-width: 26ch;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+  line-height: 1.45;
+  color: var(--sky-ink);
+}
+.split__body p {
+  margin: 0;
+  font-size: 1.04rem;
+  line-height: 1.82;
+  color: var(--text-soft);
+}
+.split__body p + p { margin-top: var(--s-3); }
 
 /* --- Body prose ----------------------------------------------------------- */
 .prose { max-width: 64ch; margin-inline: auto; }
 .prose p, .prose--single {
   margin: 0;
   font-size: 1.04rem;
-  line-height: 1.78;
+  line-height: 1.82;
   color: var(--text-soft);
 }
 .prose p + p { margin-top: var(--s-3); }
-.prose--single { max-width: 64ch; margin-inline: auto; }
+.prose--single { max-width: 62ch; margin-inline: auto; }
 
-/* Closing line for a section — the one place gold is allowed to carry weight */
-.statement {
-  margin: var(--s-5) auto 0;
-  text-align: center;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(1.35rem, 3vw, 1.95rem);
-  line-height: 1.25;
-  letter-spacing: -.015em;
-  color: var(--navy-900);
-}
-.statement::after {
-  content: "";
-  display: block;
-  width: 72px;
-  height: 2px;
-  margin: 18px auto 0;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-
-/* --- Why SureSky: five pillars, three over two ---------------------------- */
-.pillars { display: grid; gap: var(--s-3); }
-.pillar {
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  padding: var(--s-4);
-  transition: transform var(--slow) var(--ease),
-              box-shadow var(--slow) var(--ease),
-              border-color var(--slow) var(--ease);
-}
-.pillar:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--accent-soft);
-}
-.pillar__icon {
+/* --- Full-bleed sky band ---------------------------------------------------
+   Carries the motto a second time so the line reads as a signature rather
+   than a tagline. Drawn entirely in the site palette — the same navy field
+   and radial wash as the vision band, so the two dark moments match — and
+   kept slim so it reads as a rule between sections, not a second hero.
+   Already a direct child of <main> with no .container, so it is full-bleed
+   without the 100vw trick, which would overflow by the scrollbar width. */
+.skyband {
+  position: relative;
   display: grid;
   place-items: center;
-  width: 52px; height: 52px;
-  margin-bottom: var(--s-2);
-  border-radius: var(--r-md);
-  background: var(--sky-050);
-  border: 1px solid var(--line);
-  color: var(--sky-ink);
-  transition: background-color var(--slow) var(--ease), color var(--slow) var(--ease);
+  min-height: clamp(190px, 24vw, 300px);
+  background: var(--navy-900);
+  overflow: hidden;
 }
-.pillar__icon svg { width: 24px; height: 24px; }
-.pillar:hover .pillar__icon { background: var(--gold-soft); color: var(--gold-ink); }
-.pillar h3 {
-  margin-bottom: 10px;
-  font-size: .95rem;
+.skyband::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60ch 26ch at 50% 50%, rgba(27, 76, 121, .55), transparent 72%);
+  pointer-events: none;
+}
+.skyband__motto {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: var(--s-5) var(--gutter);
+  text-align: center;
+}
+
+/* --- Motto as a signature --------------------------------------------------
+   Shared by the hero and the sky band: wide tracking, a single gold hairline
+   beneath, nothing else. */
+.signature {
+  display: inline-block;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.5rem, 4.6vw, 3.2rem);
+  font-variation-settings: "opsz" 144;
+  letter-spacing: .01em;
+  line-height: 1.2;
+  color: var(--white);
+}
+.signature::after {
+  content: "";
+  display: block;
+  width: 54px;
+  height: 1px;
+  margin: clamp(14px, 2vw, 22px) auto 0;
+  background: var(--gold);
+}
+
+/* --- Why SureSky: numbered editorial list ---------------------------------
+   Hairline-divided rows with hanging numerals — a contents page, not a card
+   grid. The numeral is decorative; the ordered list carries the semantics. */
+.vlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.vitem {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-2) var(--s-3);
+  align-items: start;
+  padding: var(--s-4) 0;
+  border-bottom: 1px solid var(--line);
+  transition: background-color var(--hover-t) var(--ease);
+}
+.vitem:hover { background: rgba(20, 58, 94, .022); }
+.vitem__num {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  font-variation-settings: "opsz" 144;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--sky-200);
+  transition: color var(--hover-t) var(--ease);
+}
+.vitem:hover .vitem__num { color: var(--gold); }
+.vitem__body { max-width: 62ch; }
+.vitem__body h3 {
+  margin-bottom: 8px;
+  font-family: var(--font);
+  font-size: .92rem;
   font-weight: 800;
-  letter-spacing: .14em;
+  letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--navy-900);
 }
-.pillar p { font-size: .96rem; color: var(--text-soft); }
+.vitem__body p { margin: 0; font-size: 1.02rem; line-height: 1.72; color: var(--text-soft); }
 
 /* --- The bigger vision ----------------------------------------------------
-   The heaviest band on the page: navy field, gold wash, and the growth arc
-   drawn as a connected four-step run. */
+   The heaviest band on the page: navy field, grain, and the growth arc drawn
+   as a connected run of stops. */
 .vision { overflow: hidden; }
 .vision::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(70ch 34ch at 50% 0%, rgba(var(--accent-rgb), .22), transparent 72%);
+  background: radial-gradient(72ch 36ch at 50% 0%, rgba(27, 76, 121, .55), transparent 72%);
   pointer-events: none;
 }
 .vision > .container { position: relative; z-index: 1; }
 .vision__title {
-  font-size: clamp(1.9rem, 4.4vw, 3rem);
-  line-height: 1.1;
-  letter-spacing: -.025em;
+  font-size: clamp(2rem, 5.2vw, 3.6rem);
+  line-height: 1.06;
 }
 .vision__title em { font-style: normal; color: var(--gold); }
 .vision__lead {
-  max-width: 68ch;
+  max-width: 66ch;
   margin: 0 auto;
   text-align: center;
   font-size: clamp(1.02rem, 1.4vw, 1.14rem);
-  line-height: 1.78;
+  line-height: 1.8;
   color: #A9BACC;
 }
 
-.vsteps {
-  list-style: none;
-  margin: var(--s-5) 0 0;
-  padding: 0;
+.track { list-style: none; margin: var(--s-6) 0 0; padding: 0; display: grid; }
+.track__stop {
   display: grid;
-  gap: var(--s-3);
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 0 var(--s-3);
+  padding: var(--s-3) 0;
 }
-.vstep {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 16px;
+.track__stop + .track__stop { border-top: 1px solid rgba(255, 255, 255, .10); }
+/* Quiet numerals — the gold in this band belongs to the headline word and the
+   rail dots, and three gold elements would be one device too many. */
+.track__num {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-variation-settings: "opsz" 144;
+  line-height: 1;
+  color: rgba(255, 255, 255, .34);
 }
-/* Connector between consecutive steps — vertical while the run is stacked,
-   flipped horizontal at the wide breakpoint. Drawn behind the icons. */
-.vstep + .vstep::before {
-  content: "";
-  position: absolute;
-  left: 27px;
-  top: calc(var(--s-3) * -1);
-  width: 1px;
-  height: var(--s-3);
-  background: rgba(209, 171, 82, .38);
-}
-.vstep__icon {
-  position: relative;
-  z-index: 1;                     /* sits over the connector rule */
-  display: grid;
-  place-items: center;
-  width: 56px; height: 56px;
-  flex: none;
-  border-radius: 50%;
-  background: var(--navy-800);
-  border: 1px solid rgba(209, 171, 82, .38);
-  color: var(--gold);
-  transition: transform var(--slow) var(--ease),
-              background-color var(--slow) var(--ease),
-              border-color var(--slow) var(--ease);
-}
-.vstep__icon svg { width: 24px; height: 24px; }
-.vstep:hover .vstep__icon {
-  transform: translateY(-4px);
-  background: rgba(209, 171, 82, .14);
-  border-color: var(--gold);
-}
-.vstep__label {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1rem;
+.track__rail { display: none; }          /* dots and rule are a wide-screen device */
+.track__label {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
   line-height: 1.35;
+  letter-spacing: -.015em;
   color: var(--white);
 }
 
 .vision__close {
-  max-width: 58ch;
-  margin: var(--s-5) auto 0;
+  max-width: 30ch;
+  margin: var(--s-6) auto 0;
   text-align: center;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(1.15rem, 2.2vw, 1.5rem);
-  line-height: 1.45;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(1.3rem, 3vw, 2.05rem);
+  font-variation-settings: "opsz" 120;
+  line-height: 1.28;
+  letter-spacing: -.022em;
   color: var(--white);
-}
-.vision__close::before {
-  content: "";
-  display: block;
-  width: 72px;
-  height: 2px;
-  margin: 0 auto var(--s-3);
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
 /* --- Our promise ---------------------------------------------------------- */
-.promise__title { font-size: clamp(1.5rem, 3.2vw, 2.15rem); line-height: 1.22; }
+.promise__title { font-size: clamp(1.6rem, 3.4vw, 2.4rem); line-height: 1.16; }
 /* Kicker and list share one 720px column so their left edges line up */
 .promise__kicker {
   max-width: 720px;
   margin: var(--s-4) auto 0;
-  font-family: var(--font-display);
+  font-family: var(--font);
   font-weight: 800;
-  font-size: 1.02rem;
-  letter-spacing: .04em;
-  color: var(--navy-900);
+  font-size: .82rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 .promise-list {
   list-style: none;
@@ -2297,24 +2439,35 @@ form.is-sent > *:not(.form-status) { display: none; }
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 4px;
+  padding: 15px 4px;
   border-bottom: 1px solid var(--line);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.02rem;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.08rem;
+  letter-spacing: -.012em;
   color: var(--navy-900);
 }
-.promise-list li svg { width: 18px; height: 18px; flex: none; color: var(--gold-ink); }
+.promise-list li svg { width: 16px; height: 16px; flex: none; color: var(--sky-ink); }
 
 /* --- Closing CTA ---------------------------------------------------------- */
 .endcta { margin: 0; text-align: center; }
-.endcta::before {
-  content: "";
-  display: block;
-  width: min(220px, 46%);
-  height: 1px;
-  margin: 0 auto var(--s-4);
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+
+/* --- One hover speed across the page --------------------------------------
+   These elements each shipped with their own duration (180/240/300ms). The
+   inconsistency is small but it is exactly what makes a surface feel
+   assembled rather than designed, so they are normalised to one. */
+.page-inc .btn,
+.page-inc .tlink,
+.page-inc .dcard,
+.page-inc .nav__link,
+.page-inc .nav__link::after,
+.page-inc .nav__phone,
+.page-inc .logo,
+.page-inc .topbar a,
+.page-inc .footer a,
+.page-inc .skip-link {
+  transition-duration: var(--hover-t);
+  transition-timing-function: var(--ease);
 }
 
 /* --- Divisions ------------------------------------------------------------ */
@@ -2501,8 +2654,9 @@ form.is-sent > *:not(.form-status) { display: none; }
   .division--feature { display: grid; grid-template-columns: 1.05fr 1fr; }
   .division--feature .division__banner { height: 100%; min-height: 300px; }
   .dgrid { grid-template-columns: repeat(3, 1fr); }
-  .pillars { grid-template-columns: repeat(2, 1fr); }
   .promise-list { grid-template-columns: repeat(2, 1fr); column-gap: var(--s-4); }
+  /* Hanging numerals move out into their own column */
+  .vitem { grid-template-columns: 4.5rem 1fr; gap: 0 var(--s-4); }
 }
 
 /* The drawer carries its own CTA for mobile; on desktop the header CTA in
@@ -2527,6 +2681,10 @@ form.is-sent > *:not(.form-status) { display: none; }
   html { scroll-padding-top: calc(var(--header-h) + 16px); }
   .section { padding-block: var(--s-7); }
   .section--tight { padding-block: var(--s-6); }
+  /* Restated here because the plain .section rule above would otherwise
+     flatten the rhythm back out at this width. */
+  .section--airy { padding-block: calc(var(--s-7) * 1.4); }
+  .section--snug { padding-block: var(--s-6) var(--s-7); }
   .hero { padding-top: var(--s-8); }
   .hero__grid { grid-template-columns: 1.12fr .88fr; gap: var(--s-6); }
   .feature { grid-template-columns: 1fr 1fr; gap: var(--s-6); }
@@ -2543,25 +2701,53 @@ form.is-sent > *:not(.form-status) { display: none; }
   .footer__grid { grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: var(--s-5); }
   .values { grid-template-columns: repeat(3, 1fr); }
 
-  /* Five pillars as three over two, the bottom pair centred under the top
-     row. A six-column track makes each card two columns wide, so the offset
-     row is an offset start rather than a separate grid. */
-  .pillars { grid-template-columns: repeat(6, 1fr); }
-  .pillar { grid-column: span 2; }
-  .pillar:nth-child(4) { grid-column: 2 / span 2; }
-  .pillar:nth-child(5) { grid-column: 4 / span 2; }
+  /* Who we are: statement left, argument right. The left column is the
+     narrower of the two so the body copy holds the reading measure. */
+  .split { grid-template-columns: 0.86fr 1fr; gap: var(--s-6); align-items: start; }
 
-  /* The growth arc turns into a connected horizontal run */
-  .vsteps { grid-template-columns: repeat(4, 1fr); gap: var(--s-2); }
-  .vstep { flex-direction: column; text-align: center; gap: 16px; }
-  .vstep__label { font-size: .97rem; max-width: 18ch; }
-  .vstep + .vstep::before {
-    top: 28px;
-    left: auto;
-    right: 50%;
-    width: 100%;
-    height: 1px;
+  /* Numerals get more room and the copy indents off them */
+  .vitem { grid-template-columns: 6rem 1fr; gap: 0 var(--s-5); padding: var(--s-5) 0; }
+
+  /* The growth arc becomes a connected horizontal run: numeral, a dot sitting
+     on a continuous rule, then the label. The rule is drawn per stop and
+     trimmed at the two ends, so it needs no magic offset from the top. */
+  .track { grid-template-columns: repeat(4, 1fr); }
+  .track__stop {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: 18px;
+    padding: 0 var(--s-2);
+    border-top: 0;
   }
+  .track__stop + .track__stop { border-top: 0; }
+  .track__rail {
+    display: grid;
+    place-items: center;
+    position: relative;
+    width: 100%;
+    height: 11px;
+  }
+  .track__rail::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, .16);
+  }
+  .track__stop:first-child .track__rail::before { left: 50%; }
+  .track__stop:last-child .track__rail::before { right: 50%; }
+  .track__dot {
+    position: relative;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 5px var(--navy-900);
+    transition: transform var(--hover-t) var(--ease);
+  }
+  .track__stop:hover .track__dot { transform: scale(1.4); }
+  .track__label { max-width: 17ch; }
 }
 
 /* Mobile nav */
@@ -2686,7 +2872,7 @@ form.is-sent > *:not(.form-status) { display: none; }
   .fab-estimate, .fab-estimate:hover, .fab-estimate:active,
   .card:hover, .svc:hover, .tier:hover, .review:hover,
   .value:hover, .division:hover, .system:hover, .platform:hover,
-  .pillar:hover, .vstep:hover .vstep__icon,
+  .track__stop:hover .track__dot,
   .docbtn:hover, .mapchip:hover, .report:hover,
   .logo:hover, .step:hover {
     transform: none !important;
