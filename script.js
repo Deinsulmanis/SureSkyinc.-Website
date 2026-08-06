@@ -5,6 +5,15 @@
 (function () {
   'use strict';
 
+  /* Shared secret sent with the lead-alert request so the Netlify Function
+     rejects POSTs that did not come from this form. Must match the
+     LEAD_ALERT_SECRET environment variable set in the Netlify dashboard.
+
+     This is a static site, so the value ships in the page and anyone reading
+     the source can see it. It stops drive-by and automated hits on the
+     endpoint; it is not a credential and protects nothing else. */
+  var LEAD_ALERT_SECRET = 'REPLACE_WITH_LEAD_ALERT_SECRET';
+
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ------------------------------------------------------------------
@@ -445,7 +454,10 @@
 
       fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-lead-secret': LEAD_ALERT_SECRET
+        },
         body: JSON.stringify(payload)
       }).catch(function () { /* side effect only — never surfaced */ });
     } catch (e) {

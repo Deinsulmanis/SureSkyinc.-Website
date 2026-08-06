@@ -1,4 +1,17 @@
 // netlify/functions/notify-lead.js
+
+// Length-first, then a XOR accumulation over every character so the loop
+// never short-circuits on the first mismatch. Cheap to do, and it costs
+// nothing to not leak timing.
+function secretMatches(given, expected) {
+  if (typeof given !== "string" || given.length !== expected.length) return false;
+  let diff = 0;
+  for (let i = 0; i < expected.length; i++) {
+    diff |= given.charCodeAt(i) ^ expected.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
@@ -9,6 +22,23 @@ exports.handler = async (event) => {
     data = JSON.parse(event.body || "{}");
   } catch {
     return { statusCode: 400, body: "Invalid JSON" };
+  }
+
+  // Shared secret — checked before the honeypot and before any Twilio work,
+  // so an unauthorised caller can never reach the send path. While
+  // LEAD_ALERT_SECRET is unset the endpoint stays open, so adding the
+  // variable is what switches protection on rather than what un-breaks it.
+  const secret = process.env.LEAD_ALERT_SECRET;
+  if (secret) {
+    const headers = event.headers || {};
+    const given = headers["x-lead-secret"] || headers["X-Lead-Secret"];
+    if (!secretMatches(given, secret)) {
+      return { statusCode: 401, body: "Unauthorized" };
+    }
+  } else {
+    console.warn(
+      "notify-lead: LEAD_ALERT_SECRET is not set — endpoint is unprotected."
+    );
   }
 
   // Spam honeypot — silently accept and drop
