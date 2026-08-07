@@ -28,7 +28,7 @@
 
 <link rel="preload" href="assets/fonts/Manrope-Variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/Fraunces-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=20260805e">
+<link rel="stylesheet" href="styles.css?v=20260806a">
 
 <script type="application/ld+json">
 {
@@ -219,11 +219,18 @@
 </section>
 
 <!-- ============================================================
-     SKY BAND — a full-bleed navy field carrying the motto a second time.
-     No imagery: the band is drawn in the site palette so it reads as part
-     of the system rather than as dropped-in artwork.
+     SKY BAND — full-bleed roofline photograph carrying the motto a second
+     time. The navy veil over it both holds the motto legible and pulls the
+     image into the site palette.
      ============================================================ -->
 <section class="skyband" aria-labelledby="skyband-motto">
+  <picture>
+    <source srcset="assets/hero-roofline.webp" type="image/webp">
+    <img class="skyband__img" src="assets/hero-roofline.jpg"
+         alt="Asphalt shingle rooflines across an Alberta neighbourhood at sunset"
+         width="1284" height="600" loading="lazy" decoding="async">
+  </picture>
+  <div class="skyband__veil" aria-hidden="true"></div>
   <p class="skyband__motto" id="skyband-motto">
     <span class="signature">Be Sure About Your Sky</span>
   </p>
@@ -577,6 +584,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=20260805e" defer></script>
+<script src="script.js?v=20260806a" defer></script>
 </body>
 </html>

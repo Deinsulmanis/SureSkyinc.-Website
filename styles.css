@@ -786,6 +786,19 @@ body::after {
 .media-slot--light .media-slot__icon { color: rgba(10, 29, 51, .16); }
 .media-slot--tall { aspect-ratio: 3 / 4; }
 
+/* Slot holding a real photograph rather than the placeholder treatment. The
+   frame keeps its 4:3 box, rounding and shadow; the decorative scanlines and
+   accent wash are dropped so nothing is laid over the image. */
+.media-slot--photo { margin: 0; background: var(--navy-900); }
+.media-slot--photo::before,
+.media-slot--photo::after { display: none; }
+.media-slot--photo picture { position: absolute; inset: 0; }
+.media-slot__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Floating credential chip on hero media */
 .hero__chip {
   position: absolute;
@@ -1996,7 +2009,6 @@ form.is-sent > *:not(.form-status) { display: none; }
 /* Grain over the dark bands. Flat navy gradients are the flattest, most
    obviously-generated surface on a page; a little tooth kills that. */
 .page-inc .section--dark::after,
-.page-inc .skyband::after,
 .page-inc .cta-band::after {
   content: "";
   position: absolute;
@@ -2252,25 +2264,40 @@ form.is-sent > *:not(.form-status) { display: none; }
 .prose--single { max-width: 62ch; margin-inline: auto; }
 
 /* --- Full-bleed sky band ---------------------------------------------------
-   Carries the motto a second time so the line reads as a signature rather
-   than a tagline. Drawn entirely in the site palette — the same navy field
-   and radial wash as the vision band, so the two dark moments match — and
-   kept slim so it reads as a rule between sections, not a second hero.
-   Already a direct child of <main> with no .container, so it is full-bleed
-   without the 100vw trick, which would overflow by the scrollbar width. */
+   A roofline photograph carrying the motto a second time, so the line reads
+   as a signature rather than a tagline. Already a direct child of <main> with
+   no .container, so it is full-bleed without the 100vw trick, which would
+   overflow by the scrollbar width. Navy sits underneath as the colour while
+   the image loads. */
 .skyband {
   position: relative;
   display: grid;
   place-items: center;
-  min-height: clamp(190px, 24vw, 300px);
+  min-height: clamp(210px, 26vw, 340px);
   background: var(--navy-900);
   overflow: hidden;
 }
-.skyband::before {
-  content: "";
+.skyband picture {
   position: absolute;
   inset: 0;
-  background: radial-gradient(60ch 26ch at 50% 50%, rgba(27, 76, 121, .55), transparent 72%);
+}
+/* The source is 2.14:1 but the band runs much wider than that on desktop, so
+   cover crops vertically. Biasing below centre keeps the skyline and the
+   shingle roof in frame rather than filling with sky. */
+.skyband__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 58%;
+}
+/* Holds the motto legible over the photograph, and tints the whole image
+   toward the site navy so it reads as part of the palette. */
+.skyband__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(11, 33, 54, .58), rgba(11, 33, 54, .72)),
+    radial-gradient(70ch 30ch at 50% 50%, rgba(27, 76, 121, .34), transparent 74%);
   pointer-events: none;
 }
 .skyband__motto {
@@ -2294,6 +2321,8 @@ form.is-sent > *:not(.form-status) { display: none; }
   letter-spacing: .01em;
   line-height: 1.2;
   color: var(--white);
+  /* Guards the line where it crosses the brightest part of the sunset */
+  text-shadow: 0 2px 18px rgba(11, 33, 54, .55);
 }
 .signature::after {
   content: "";

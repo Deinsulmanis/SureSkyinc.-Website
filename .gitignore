@@ -12,6 +12,17 @@ SureSkyPremium.png
 # assets/report-pages/ at ~450 KB total. Same reasoning as above.
 /roof-report-sample-p*.png
 
+# Original phone screenshots of the job photos (~8-9 MB each, all letterboxed).
+# The cropped, compressed versions the site serves are committed under assets/
+# at ~80-230 KB each. These source files get renamed as they are sorted, so the
+# rule is a glob rather than a fixed list — nothing multi-megabyte at the root
+# should reach the repo.
+/Homes.png
+/Shingles*.png
+/CrewOnRoof.png
+/HeroImage.png
+/HomesHero.png
+
 # Editor / OS cruft
 .vscode/
 .DS_Store

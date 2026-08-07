@@ -27,7 +27,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-homes-180.png">
 
 <link rel="preload" href="assets/fonts/Manrope-Variable.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=20260805b">
+<link rel="stylesheet" href="styles.css?v=20260806a">
 
 <script type="application/ld+json">
 {
@@ -236,10 +236,20 @@
     </div>
 
     <div style="position:relative">
-      <div class="media-slot" role="img" aria-label="Completed SureSky Homes asphalt shingle roof">
-        <span class="media-slot__icon" aria-hidden="true"><svg><use href="#i-camera"></use></svg></span>
-        <span class="media-slot__label">Hero photo</span>
-      </div>
+      <!-- Real job photo. Same roofline shot as the Inc sky band, cropped 4:3
+           for this slot rather than reusing the wide band crop. -->
+      <figure class="media-slot media-slot--photo">
+        <picture>
+          <source type="image/webp"
+                  srcset="assets/homes-hero-roofline-800.webp 800w, assets/homes-hero-roofline.webp 1120w"
+                  sizes="(min-width: 960px) 30rem, calc(100vw - 2.5rem)">
+          <img class="media-slot__img" src="assets/homes-hero-roofline.jpg"
+               srcset="assets/homes-hero-roofline-800.jpg 800w, assets/homes-hero-roofline.jpg 1120w"
+               sizes="(min-width: 960px) 30rem, calc(100vw - 2.5rem)"
+               alt="A completed SureSky asphalt shingle roof at dusk, looking across the ridge and vents to an Alberta neighbourhood skyline"
+               width="1120" height="840" fetchpriority="high" decoding="async">
+        </picture>
+      </figure>
 
       <div class="hero__chip hero__chip--tl">
         <span class="hero__chip__icon" aria-hidden="true"><svg><use href="#i-shield"></use></svg></span>
@@ -338,10 +348,20 @@
         <a class="tlink" href="#warranty">See how we back the work</a>
       </div>
       <div class="feature__media">
-        <div class="media-slot media-slot--light" role="img" aria-label="SureSky Homes crew installing asphalt shingles">
-          <span class="media-slot__icon" aria-hidden="true"><svg><use href="#i-camera"></use></svg></span>
-          <span class="media-slot__label">Photo · crew on a re-roof</span>
-        </div>
+        <!-- Real job photo. The .media-slot frame stays — it supplies the 4:3
+             box, the rounding and the shadow — and the image fills it. -->
+        <figure class="media-slot media-slot--photo">
+          <picture>
+            <source type="image/webp"
+                    srcset="assets/crew-reroof-800.webp 800w, assets/crew-reroof.webp 1120w"
+                    sizes="(min-width: 960px) 30rem, calc(100vw - 2.5rem)">
+            <img class="media-slot__img" src="assets/crew-reroof.jpg"
+                 srcset="assets/crew-reroof-800.jpg 800w, assets/crew-reroof.jpg 1120w"
+                 sizes="(min-width: 960px) 30rem, calc(100vw - 2.5rem)"
+                 alt="A SureSky re-roof underway: fresh asphalt shingles laid across an Alberta rooftop, with a roofing nailer and caulking gun on the deck beside the chimney"
+                 width="1120" height="840" loading="lazy" decoding="async">
+          </picture>
+        </figure>
       </div>
     </div>
 
@@ -383,10 +403,19 @@
         <a class="tlink" href="#estimate">Report storm damage</a>
       </div>
       <div class="feature__media">
-        <div class="media-slot" role="img" aria-label="Storm damage roof inspection in Alberta">
-          <span class="media-slot__icon" aria-hidden="true"><svg><use href="#i-camera"></use></svg></span>
-          <span class="media-slot__label">Photo · storm damage inspection</span>
-        </div>
+        <!-- Real job photo, cropped 4:3 to the slot. -->
+        <figure class="media-slot media-slot--photo">
+          <picture>
+            <source type="image/webp"
+                    srcset="assets/storm-inspection-800.webp 800w, assets/storm-inspection.webp 1120w"
+                    sizes="(min-width: 960px) 30rem, calc(100vw - 2.5rem)">
+            <img class="media-slot__img" src="assets/storm-inspection.jpg"
+                 srcset="assets/storm-inspection-800.jpg 800w, assets/storm-inspection.jpg 1120w"
+                 sizes="(min-width: 960px) 30rem, calc(100vw - 2.5rem)"
+                 alt="A SureSky roofer standing on the ridge of an asphalt shingle roof, checking the run of vents above an Alberta neighbourhood at dusk"
+                 width="1120" height="840" loading="lazy" decoding="async">
+          </picture>
+        </figure>
       </div>
     </div>
 
@@ -1265,6 +1294,6 @@
   Free Estimate
 </button>
 
-<script src="script.js?v=20260805b" defer></script>
+<script src="script.js?v=20260806a" defer></script>
 </body>
 </html>
