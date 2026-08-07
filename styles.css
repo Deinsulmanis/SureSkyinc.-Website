@@ -2679,9 +2679,7 @@ form.is-sent > *:not(.form-status) { display: none; }
    overlay sits over the content forever. This one self-clears on a timeline
    the browser owns, so nothing can leave it stuck.
 
-   Each page picks the variant whose background matches its own first screen —
-   navy on Homes, white on Inc — so the splash dissolves into the hero rather
-   than flashing against it.
+   White ground on both pages, each carrying its own mark in full colour.
    -------------------------------------------------------------------------- */
 .splash {
   position: fixed;
@@ -2692,7 +2690,6 @@ form.is-sent > *:not(.form-status) { display: none; }
   background: var(--white);
   animation: splash-out 1150ms var(--ease) forwards;
 }
-.splash--dark { background: var(--navy-900); }
 .splash__logo {
   width: min(260px, 54vw);
   height: auto;
