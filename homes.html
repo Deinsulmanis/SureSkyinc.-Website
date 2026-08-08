@@ -15,15 +15,16 @@
 <meta property="og:description" content="Multiple quotes, one trusted source. Quality asphalt shingle roofing with in-house warranties up to 25 years, across Edmonton, Calgary and surrounding areas.">
 <meta property="og:url" content="https://suresky.ca/homes.html">
 <meta property="og:locale" content="en_CA">
-<!-- ?v= bumps the URL so iMessage, Facebook and other scrapers refetch the
-     card instead of serving the copy they already cached. Bump it again if
-     the artwork ever changes. -->
-<meta property="og:image" content="https://suresky.ca/assets/og-homes.png?v=2">
+<!-- Absolute host is sureskyhomes.netlify.app, NOT suresky.ca: that domain
+     currently serves an unrelated GoDaddy site, so every image URL under it
+     404s and link previews break. Point these back at suresky.ca once the
+     domain is aimed at Netlify. ?v= forces scrapers to refetch. -->
+<meta property="og:image" content="https://sureskyhomes.netlify.app/assets/og-homes.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="SureSky Homes — residential roofing in Alberta">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://suresky.ca/assets/og-homes.png?v=2">
+<meta name="twitter:image" content="https://sureskyhomes.netlify.app/assets/og-homes.png?v=2">
 <meta name="theme-color" content="#143A5E">
 
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-homes-32.png">
