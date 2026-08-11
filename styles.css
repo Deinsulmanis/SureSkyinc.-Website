@@ -2281,14 +2281,14 @@ form.is-sent > *:not(.form-status) { display: none; }
   position: absolute;
   inset: 0;
 }
-/* The source is 2.14:1 but the band runs much wider than that on desktop, so
-   cover crops vertically. Biasing below centre keeps the skyline and the
-   shingle roof in frame rather than filling with sky. */
+/* The source is 1.5:1 but the band runs much wider than that on desktop, so
+   cover crops vertically. Biasing below centre keeps the family and dog in
+   frame rather than filling with sky. */
 .skyband__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 58%;
+  object-position: center 65%;
 }
 /* Holds the motto legible over the photograph, and tints the whole image
    toward the site navy so it reads as part of the palette. */
