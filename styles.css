@@ -1467,9 +1467,16 @@ body::after {
   place-items: center;
 }
 .docpage img {
-  width: auto;
+  /* Under place-items:center the grid item doesn't stretch, so width:auto
+     had no definite size to derive from before the lazy image decoded — the
+     page sat at ~0 height, then popped in and shoved #estimate down mid-
+     scroll (the "Free Estimate" anchor was landing short of the form).
+     width:100% + aspect-ratio gives it a definite box immediately; the
+     max-height clamp still shrinks it (and its width, via the ratio) on
+     short viewports. */
+  width: 100%;
   height: auto;
-  max-width: 100%;
+  aspect-ratio: 1191 / 1684;
   /* Caps the frame height so seven portrait pages stay compact. Native is
      1684px tall, so this only ever scales down. */
   max-height: clamp(340px, 58vh, 600px);
