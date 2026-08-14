@@ -9,6 +9,31 @@
   gtag('js', new Date());
   gtag('config', 'G-XSYNY932LQ');
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Any element tagged with data-ga-event fires that named event
+  document.querySelectorAll('[data-ga-event]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      gtag('event', el.getAttribute('data-ga-event'), {
+        button_text: (el.textContent || '').trim(),
+        page_location: window.location.href
+      });
+    });
+  });
+  // Tap-to-call
+  document.querySelectorAll('a[href^="tel:"]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      gtag('event', 'phone_click', { phone_number: el.getAttribute('href').replace('tel:', '') });
+    });
+  });
+  // Email clicks
+  document.querySelectorAll('a[href^="mailto:"]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      gtag('event', 'email_click');
+    });
+  });
+});
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SureSky Homes | Residential Roofing in Edmonton &amp; Calgary</title>
@@ -196,7 +221,7 @@
       <a class="nav__link" href="#why">Why Us</a>
       <a class="nav__link" href="#reviews">Reviews</a>
       <a class="nav__link" href="#estimate">Contact</a>
-      <a class="btn btn--sm" href="#estimate">Free Estimate</a>
+      <a class="btn btn--sm" href="#estimate" data-ga-event="nav_menu_estimate_click">Free Estimate</a>
     </nav>
 
     <div class="nav__actions">
@@ -204,8 +229,8 @@
         <svg aria-hidden="true"><use href="#i-phone"></use></svg>
         <span class="nav__phone-label">587-501-4389</span>
       </a>
-      <a class="btn btn--sm btn--header" href="#estimate">Free Estimate</a>
-      <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation menu">
+      <a class="btn btn--sm btn--header" href="#estimate" data-ga-event="header_estimate_click">Free Estimate</a>
+      <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation menu" data-ga-event="nav_toggle_click">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -240,7 +265,7 @@
       </p>
 
       <div class="hero__cta">
-        <a class="btn" href="#estimate">Get My Free Estimate</a>
+        <a class="btn" href="#estimate" data-ga-event="hero_estimate_click">Get My Free Estimate</a>
         <a class="btn btn--onDark" href="tel:+15875014389">
           <svg width="18" height="18" aria-hidden="true"><use href="#i-phone"></use></svg>
           Call 587-501-4389
@@ -474,7 +499,7 @@
           <li>Applies to shingles installed under the SureSky Extended Roofing Warranty Program</li>
           <li>Valid for ten years from the original installation date</li>
         </ul>
-        <a class="btn btn--ghost btn--block" href="#estimate" data-service-preset="Essential warranty package">Ask About Essential</a>
+        <a class="btn btn--ghost btn--block" href="#estimate" data-service-preset="Essential warranty package" data-ga-event="essential_warranty_estimate_click">Ask About Essential</a>
       </article>
 
       <article class="tier tier--featured reveal">
@@ -497,7 +522,7 @@
           <li>Must be installed by a SureSky-certified contractor using approved materials</li>
           <li>One-time transferable within the first 15 years</li>
         </ul>
-        <a class="btn btn--block" href="#estimate" data-service-preset="Premium warranty package">Ask About Premium</a>
+        <a class="btn btn--block" href="#estimate" data-service-preset="Premium warranty package" data-ga-event="premium_warranty_estimate_click">Ask About Premium</a>
       </article>
 
       <article class="tier reveal">
@@ -518,7 +543,7 @@
           <li>Algae resistance, with coverage for visible discolouration</li>
           <li>Must be installed by a SureSky-certified contractor using approved materials</li>
         </ul>
-        <a class="btn btn--ghost btn--block" href="#estimate" data-service-preset="Plus warranty package">Ask About Plus</a>
+        <a class="btn btn--ghost btn--block" href="#estimate" data-service-preset="Plus warranty package" data-ga-event="plus_warranty_estimate_click">Ask About Plus</a>
       </article>
 
     </div>
@@ -802,17 +827,17 @@
       </div>
 
       <div class="docview__nav">
-        <button class="docbtn" id="docPrev" type="button" aria-label="Previous page">
+        <button class="docbtn" id="docPrev" type="button" aria-label="Previous page" data-ga-event="roof_report_prev_click">
           <svg aria-hidden="true"><use href="#i-chev-left"></use></svg>
         </button>
         <div class="docdots" id="docDots"></div>
-        <button class="docbtn" id="docNext" type="button" aria-label="Next page">
+        <button class="docbtn" id="docNext" type="button" aria-label="Next page" data-ga-event="roof_report_next_click">
           <svg aria-hidden="true"><use href="#i-chev-right"></use></svg>
         </button>
       </div>
 
       <div class="docview__foot">
-        <a class="btn" href="assets/suresky-roof-report-sample.pdf" target="_blank" rel="noopener">
+        <a class="btn" href="assets/suresky-roof-report-sample.pdf" target="_blank" rel="noopener" data-ga-event="sample_roof_report_view_click">
           View a Sample Roof Report <span class="btn__arrow" aria-hidden="true">&rarr;</span>
         </a>
         <p class="docview__note">Opens the full seven-page PDF in a new tab.</p>
@@ -1006,7 +1031,7 @@
           <input type="hidden" name="_subject" value="New estimate request — SureSky Homes website">
           <input type="hidden" name="_replyto" id="f-replyto">
 
-          <button class="btn btn--block" type="submit" id="estimateSubmit">Send My Free Estimate Request</button>
+          <button class="btn btn--block" type="submit" id="estimateSubmit" data-ga-event="contact_form_submit">Send My Free Estimate Request</button>
 
           <p class="form-note">
             <svg aria-hidden="true"><use href="#i-lock"></use></svg>
@@ -1109,7 +1134,7 @@
 
 <!-- Persistent shortcut to the estimate form. Bottom-LEFT, deliberately clear
      of the bottom-right corner reserved for the AI chat widget. -->
-<button class="fab-estimate is-hidden" id="fabEstimate" type="button">
+<button class="fab-estimate is-hidden" id="fabEstimate" type="button" data-ga-event="popup_cta_click">
   <svg aria-hidden="true"><use href="#i-doc"></use></svg>
   Free Estimate
 </button>
