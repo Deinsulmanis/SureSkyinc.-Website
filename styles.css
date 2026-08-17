@@ -1471,15 +1471,15 @@ body::after {
      had no definite size to derive from before the lazy image decoded — the
      page sat at ~0 height, then popped in and shoved #estimate down mid-
      scroll (the "Free Estimate" anchor was landing short of the form).
-     width:100% + aspect-ratio gives it a definite box immediately; the
-     max-height clamp still shrinks it (and its width, via the ratio) on
-     short viewports. */
-  width: 100%;
+     A viewport-aware width plus aspect-ratio reserves a definite box while
+     keeping the portrait proportions intact on short viewports. */
+  width: min(100%, clamp(240px, 41.03vh, 424px));
   height: auto;
   aspect-ratio: 1191 / 1684;
   /* Caps the frame height so seven portrait pages stay compact. Native is
      1684px tall, so this only ever scales down. */
   max-height: clamp(340px, 58vh, 600px);
+  object-fit: contain;
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
   box-shadow: var(--shadow-sm);
@@ -1575,6 +1575,18 @@ body::after {
 .rating-badge__meta { font-size: .88rem; color: var(--text-soft); margin-top: 4px; }
 
 .reviews { display: grid; gap: var(--s-3); }
+.reviews--featurable {
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+.reviews--featurable > [data-featurable-async] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  contain: inline-size;
+}
 .review {
   background: var(--white);
   border: 1px solid var(--line);
