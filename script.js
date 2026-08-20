@@ -274,6 +274,30 @@
     syncFab();
   }
 
+  /* Mobile call shortcut — hidden while the hero's own call CTA is visible,
+     then pinned bottom-left for the rest of the page. CSS keeps it off
+     tablet/desktop, where the phone number remains in the sticky header. */
+  var fabCall = document.getElementById('fabCall');
+  var heroSection = document.querySelector('.hero');
+
+  if (fabCall && heroSection) {
+    function syncMobileCall() {
+      var heroBottom = heroSection.getBoundingClientRect().bottom;
+      fabCall.classList.toggle('is-hidden', heroBottom > 0);
+    }
+
+    window.addEventListener('scroll', syncMobileCall, { passive: true });
+    window.addEventListener('resize', syncMobileCall);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          fabCall.classList.toggle('is-hidden', entry.isIntersecting || entry.boundingClientRect.bottom > 0);
+        });
+      }, { threshold: 0 }).observe(heroSection);
+    }
+    syncMobileCall();
+  }
+
   /* ------------------------------------------------------------------
      Credential marquee — duplicate track for a seamless -50% loop
      ------------------------------------------------------------------ */
